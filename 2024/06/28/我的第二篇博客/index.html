@@ -22,7 +22,7 @@
 
   
 
-  <title>Hello world | my_blog</title>
+  <title>我的第二篇博客 | my_blog</title>
 
   
 
@@ -99,17 +99,12 @@
     <div class="header-content">
       <div class="post-text layout-block">
         <div class="layout-margin">
-          <h1 class="title-wrap">Hello world</h1>
+          <h1 class="title-wrap">我的第二篇博客</h1>
           <h2 class="title-sub-wrap">
             <strong>wuguangzhou</strong>
             <span>发布于</span>
-            <time  class="article-date" datetime="2024-06-27T14:40:48.923Z" itemprop="datePublished">2024-06-27</time>
+            <time  class="article-date" datetime="2024-06-28T09:07:00.000Z" itemprop="datePublished">2024-06-28</time>
           </h2>
-          
-            <h2 class="last-time">
-              <span>最后更新于</span>
-              <time  class="article-updated" datetime="2024-06-28T02:26:30.222Z" itemprop="dateUpdated">2024-06-28</time>
-            </h2>
           
           
           <ul class="wrap-list dark">
@@ -139,25 +134,62 @@
       
       
       <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><h3 id="文件管理命令"><a href="#文件管理命令" class="headerlink" title="文件管理命令"></a>文件管理命令</h3><p>几个常见的处理目录的命令</p>
+<ul>
+<li><p>ls（英文全拼：list files）: 列出目录及文件名</p>
+</li>
+<li><p>cd（英文全拼：change directory）：切换目录</p>
+</li>
+<li><p>pwd（英文全拼：print work directory）：显示目前的目录</p>
+</li>
+<li><p>mkdir（英文全拼：make directory）：创建一个新的目录</p>
+</li>
+<li><p>rmdir（英文全拼：remove directory）：删除一个空的目录</p>
+</li>
+<li><p>cp（英文全拼：copy file）: 复制文件或目录</p>
+</li>
+<li><p>rm（英文全拼：remove）: 删除文件或目录</p>
+</li>
+<li><p>mv（英文全拼：move file）: 移动文件与目录，或修改文件与目录的名称</p>
+</li>
+<li><p>touch:创建新文件</p>
+</li>
+</ul>
+<h4 id="mkdir-创建新目录"><a href="#mkdir-创建新目录" class="headerlink" title="mkdir (创建新目录)"></a>mkdir (创建新目录)</h4><ul>
+<li><strong>-m</strong>：配置文件的权限喔！直接配置，不需要看默认权限 (umask)</li>
+<li><strong>-p</strong>：帮助你直接将所需要的目录(包含上一级目录)递归创建起来！</li>
+<li><strong>-v</strong>:显示目录创建的过程</li>
+</ul>
+<h4 id="cp-复制文件或目录"><a href="#cp-复制文件或目录" class="headerlink" title="cp (复制文件或目录)"></a>cp (复制文件或目录)</h4><ul>
+<li><strong>-a：</strong>相当於 -pdr 的意思，至於 pdr 请参考下列说明；(常用)</li>
+<li><strong>-d：</strong>若来源档为连结档的属性(link file)，则复制连结档属性而非文件本身；</li>
+<li><strong>-f：</strong>为强制(force)的意思，若目标文件已经存在且无法开启，则移除后再尝试一次；</li>
+<li><strong>-i：</strong>若目标档(destination)已经存在时，在覆盖时会先询问动作的进行(常用)</li>
+<li><strong>-l：</strong>进行硬式连结(hard link)的连结档创建，而非复制文件本身；</li>
+<li><strong>-p：</strong>连同文件的属性一起复制过去，而非使用默认属性(备份常用)；</li>
+<li><strong>-r：</strong>递归持续复制，用於目录的复制行为；(常用)</li>
+<li><strong>-s：</strong>复制成为符号连结档 (symbolic link)，亦即『捷径』文件；</li>
+<li><strong>-u：</strong>若 destination 比 source 旧才升级 destination ！</li>
+<li><strong>-v：</strong>显示复制的详细过程</li>
+</ul>
+<h4 id="mv-移动文件与目录，或修改名称"><a href="#mv-移动文件与目录，或修改名称" class="headerlink" title="mv(移动文件与目录，或修改名称)"></a>mv(移动文件与目录，或修改名称)</h4><ul>
+<li><strong>-f</strong>：force 强制的意思，如果目标文件已经存在，不会询问而直接覆盖；</li>
+<li><strong>-i</strong>：若目标文件 (destination) 已经存在时，就会询问是否覆盖！</li>
+<li><strong>-u</strong>：若目标文件已经存在，且 source 比较新，才会升级 (update)</li>
+<li><strong>-v：</strong>显示复制的详细过程</li>
+</ul>
+<h4 id="rm-移除文件或目录"><a href="#rm-移除文件或目录" class="headerlink" title="rm (移除文件或目录)"></a>rm (移除文件或目录)</h4><ul>
+<li><strong>-f</strong>：就是 force 的意思，忽略不存在的文件，不会出现警告信息；</li>
+<li><strong>-i</strong>：互动模式，在删除前会询问使用者是否动作</li>
+<li><strong>-r</strong>：递归删除啊！最常用在目录的删除了！这是非常危险的选项！</li>
+</ul>
 
       </section>
 
       
       
         <nav class="article-nav">
+          
           
             <div class="article-nav-item layout-padding">
   <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
@@ -168,11 +200,10 @@
           <h2 class="card-text--title text-ellipsis">我的第一篇博客</h2>
         </a>
       
-      <div class="card-text--row">Newer</div>
+      <div class="card-text--row">Older</div>
     </div>
   </article>
 </div>
-          
           
         </nav>
       
