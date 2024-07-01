@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#3367D6"/>
+  <link rel="apple-touch-icon" href="/icons-192.png">
+  <link rel="manifest" href="/manifest.json">
+  
+  <meta name="generator" content="Hexo 7.2.0">
+
+  
+
+  
+
+  
+    <meta name="author" content="wuguangzhou">
+  
+
+  
+
+  
+
+  <title>Linux基础知识 | Mr Zhou</title>
+
+  
+
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+
+  <!--mathjax latex数学公式显示支持-->
+  
+  
+
+  
+
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+  <div class="root-container">
+    
+<!-- header container -->
+<header class="header-container post">
+  
+    <div class="post-image" style="background-image: url(https://qiniu.sukoshi.xyz/src/images/68686407_p0.jpg)"></div>
+  
+
+  <!-- navbar -->
+<nav class="navbar">
+  <div class="navbar-content">
+    <!-- logo -->
+    <div class="navbar-logo">
+      <a href="/">
+        
+          Mr Zhou
+        
+      </a>
+    </div>
+    <!-- link -->
+    <div class="navbar-link">
+      <div class="navbar-btn">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <ul class="navbar-list">
+        
+          <li class="navbar-list-item"><a href="/">首页</a></li>
+        
+          <li class="navbar-list-item"><a href="/links">友链</a></li>
+        
+          <li class="navbar-list-item"><a href="/about">关于</a></li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+    <div class="header-content">
+      <div class="post-text layout-block">
+        <div class="layout-margin">
+          <h1 class="title-wrap">Linux基础知识</h1>
+          <h2 class="title-sub-wrap">
+            <strong>wuguangzhou</strong>
+            <span>发布于</span>
+            <time  class="article-date" datetime="2024-06-30T16:00:00.000Z" itemprop="datePublished">2024-07-01</time>
+          </h2>
+          
+          
+          <ul class="wrap-list dark">
+  
+</ul>
+          <ul class="wrap-list dark">
+  
+    <li><a href="/tags/Linux/">🏷️ Linux</a></li>
+  
+</ul>
+        </div>
+      </div>
+    </div>
+  
+
+  
+  
+  
+</header>
+
+    <!-- 文章 -->
+
+<!-- 文章内容 -->
+<div class="body-container">
+  <article class="content-container layout-block post-container">
+    <div class="article-info">
+      
+      
+      
+      
+      <section class="article-entry markdown-body layout-margin content-padding--large soft-size--large soft-style--box">
+        <h1 id="Linux部分"><a href="#Linux部分" class="headerlink" title="Linux部分"></a>Linux部分</h1><h2 id="Linux基础部分"><a href="#Linux基础部分" class="headerlink" title="Linux基础部分"></a>Linux基础部分</h2><h3 id="初识shell"><a href="#初识shell" class="headerlink" title="初识shell"></a>初识shell</h3><h4 id="使用shell的两种方式"><a href="#使用shell的两种方式" class="headerlink" title="使用shell的两种方式"></a>使用shell的两种方式</h4><ul>
+<li>交互式命令行<ul>
+<li>默认等待用户输入命令，输入一行回车后执行一行命令</li>
+<li>效率低 适合少量的工作</li>
+</ul>
+</li>
+<li>shell脚本<ul>
+<li>将需要执行的命令和逻辑判断语句都写入一个文件中，一起运行</li>
+<li>效率高 适合完成复杂，重复性工作</li>
+</ul>
+</li>
+</ul>
+<h4 id="bash-shell提示符"><a href="#bash-shell提示符" class="headerlink" title="bash shell提示符"></a>bash shell提示符</h4><h4 id="shell语法"><a href="#shell语法" class="headerlink" title="shell语法"></a>shell语法</h4><h5 id="命令-选项-参数"><a href="#命令-选项-参数" class="headerlink" title="命令 选项 参数"></a>命令 选项 参数</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cal --year -m 2020</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>命令</p>
+<ul>
+<li><code>cal</code>是命令，用于查看日历</li>
+</ul>
+<p>选项</p>
+<ul>
+<li><code>--year</code>是选项，表示显示一整年，这个是一个长选项，也就是单词都拼全了，需要两条<code>-</code>符号</li>
+<li><code>-m</code>是短选项，是首字母，表示每个星期的星期一作为第一天</li>
+<li>对于有些命令而言，可以不写选项，这样命令会有个默认的行为</li>
+<li>短选项可以多个合并在一起，比如上面的命令可以写成<code>-ym</code>其中y是year简写，可以和m写在一起，而长选项不支持写在一起</li>
+</ul>
+<h5 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h5><p>用于显示指定工作目录下之内容（列出目前工作目录所含之文件及子目录)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls [-alrtAFR] [name...</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>-a</strong>：显示所有文件及目录 (**.**开头的隐藏文件也会列出)</p>
+</li>
+<li><p><strong>-l</strong>：除文件名称外，亦将文件型态、权限、拥有者、文件大小等资讯详细列出</p>
+</li>
+<li><p><strong>-r</strong>：将文件以相反次序显示(原定依英文字母次序)</p>
+</li>
+<li><p><strong>-t</strong>：将文件依建立时间之先后次序列出</p>
+</li>
+<li><p><strong>-A</strong>：同 -a ，但不列出 “.” (目前目录) 及 “..” (父目录)</p>
+</li>
+<li><p><strong>-F</strong>：在列出的文件名称后加一符号；例如可执行档则加 “*”, 目录则加 “&#x2F;“，链接加”@”</p>
+</li>
+<li><p><strong>-R</strong>：若目录下有文件，则以下之文件亦皆依序列出</p>
+</li>
+<li><p><strong>-h</strong>：将显示出来的文件大小以合适的单位显示出来</p>
+<p>实例</p>
+<ul>
+<li><p>查看当前目录下的文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看根目录下的文件，查看&#x2F;usr目录下的文件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id=""><a href="#" class="headerlink" title=""></a></h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls /</span><br><span class="line">[root@localhost ~]# ls /usr</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h5><p>用于字符串的输出</p>
+<p>选项</p>
+<ul>
+<li><p><strong>-n：</strong>不输出行尾的换行符</p>
+</li>
+<li><p>-e</p>
+<p>：允许对下面列出的加反斜线转义的字符进行解释</p>
+<ul>
+<li>\ 反斜线</li>
+<li>\a 报警符(BEL)</li>
+<li>\b 退格符</li>
+<li>\c 禁止尾随的换行符</li>
+<li>\f 换页符</li>
+<li>\n 换行符</li>
+<li>\r 回车符</li>
+<li>\t 水平制表符</li>
+<li>\v 纵向制表符</li>
+</ul>
+</li>
+<li><p>-E 禁止对在STRINGs中的那些序列进行解释</p>
+</li>
+</ul>
+<h5 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h5><p>针对文件内容进行过滤</p>
+<p>实例</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@xwz ~]# grep &#x27;root&#x27; /etc/passwd</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在/etc/passwd的文件中找出有root的行</span></span><br><span class="line">[root@xwz ~]# grep &#x27;^root&#x27; /etc/passwd</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在/etc/passwd中找出root开头的行</span></span><br><span class="line">[root@xwz ~]# grep &#x27;bash$&#x27; /etc/passwd</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在/etc/passwd中找出bas<span class="comment">#h结尾的行文件管理</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h2><h3 id="文件管理命令"><a href="#文件管理命令" class="headerlink" title="文件管理命令"></a>文件管理命令</h3><p>几个常见的处理目录的命令</p>
+<ul>
+<li><p>ls（英文全拼：list files）: 列出目录及文件名</p>
+</li>
+<li><p>cd（英文全拼：change directory）：切换目录</p>
+</li>
+<li><p>pwd（英文全拼：print work directory）：显示目前的目录</p>
+</li>
+<li><p>mkdir（英文全拼：make directory）：创建一个新的目录</p>
+</li>
+<li><p>rmdir（英文全拼：remove directory）：删除一个空的目录</p>
+</li>
+<li><p>cp（英文全拼：copy file）: 复制文件或目录</p>
+</li>
+<li><p>rm（英文全拼：remove）: 删除文件或目录</p>
+</li>
+<li><p>mv（英文全拼：move file）: 移动文件与目录，或修改文件与目录的名称</p>
+</li>
+<li><p>touch:创建新文件</p>
+</li>
+</ul>
+<h4 id="mkdir-创建新目录"><a href="#mkdir-创建新目录" class="headerlink" title="mkdir (创建新目录)"></a>mkdir (创建新目录)</h4><ul>
+<li><strong>-m</strong>：配置文件的权限喔！直接配置，不需要看默认权限 (umask)</li>
+<li><strong>-p</strong>：帮助你直接将所需要的目录(包含上一级目录)递归创建起来！</li>
+<li><strong>-v</strong>:显示目录创建的过程</li>
+</ul>
+<h4 id="cp-复制文件或目录"><a href="#cp-复制文件或目录" class="headerlink" title="cp (复制文件或目录)"></a>cp (复制文件或目录)</h4><ul>
+<li><strong>-a：</strong>相当於 -pdr 的意思，至於 pdr 请参考下列说明；(常用)</li>
+<li><strong>-d：</strong>若来源档为连结档的属性(link file)，则复制连结档属性而非文件本身；</li>
+<li><strong>-f：</strong>为强制(force)的意思，若目标文件已经存在且无法开启，则移除后再尝试一次；</li>
+<li><strong>-i：</strong>若目标档(destination)已经存在时，在覆盖时会先询问动作的进行(常用)</li>
+<li><strong>-l：</strong>进行硬式连结(hard link)的连结档创建，而非复制文件本身；</li>
+<li><strong>-p：</strong>连同文件的属性一起复制过去，而非使用默认属性(备份常用)；</li>
+<li><strong>-r：</strong>递归持续复制，用於目录的复制行为；(常用)</li>
+<li><strong>-s：</strong>复制成为符号连结档 (symbolic link)，亦即『捷径』文件；</li>
+<li><strong>-u：</strong>若 destination 比 source 旧才升级 destination ！</li>
+<li><strong>-v：</strong>显示复制的详细过程</li>
+</ul>
+<h4 id="mv-移动文件与目录，或修改名称"><a href="#mv-移动文件与目录，或修改名称" class="headerlink" title="mv(移动文件与目录，或修改名称)"></a>mv(移动文件与目录，或修改名称)</h4><ul>
+<li><strong>-f</strong>：force 强制的意思，如果目标文件已经存在，不会询问而直接覆盖；</li>
+<li><strong>-i</strong>：若目标文件 (destination) 已经存在时，就会询问是否覆盖！</li>
+<li><strong>-u</strong>：若目标文件已经存在，且 source 比较新，才会升级 (update)</li>
+<li><strong>-v：</strong>显示复制的详细过程</li>
+</ul>
+<h4 id="rm-移除文件或目录"><a href="#rm-移除文件或目录" class="headerlink" title="rm (移除文件或目录)"></a>rm (移除文件或目录)</h4><ul>
+<li><strong>-f</strong>：就是 force 的意思，忽略不存在的文件，不会出现警告信息；</li>
+<li><strong>-i</strong>：互动模式，在删除前会询问使用者是否动作</li>
+<li><strong>-r</strong>：递归删除啊！最常用在目录的删除了！这是非常危险的选项！</li>
+</ul>
+<h3 id="文本文件查看"><a href="#文本文件查看" class="headerlink" title="文本文件查看"></a>文本文件查看</h3><h4 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h4><ul>
+<li><strong>-n</strong>：由 1 开始对所有输出的行数编号</li>
+<li><strong>-b</strong>：和 -n 相似，只不过对于空白行不编号。</li>
+<li><strong>-s</strong>：当遇到有连续两行以上的空白行，就代换为一行的空白行。</li>
+<li><strong>-A</strong>：显示控制字符。</li>
+</ul>
+<h4 id="less"><a href="#less" class="headerlink" title="less"></a>less</h4><p>可以随意浏览文件，支持翻页和搜索，支持向上翻页和向下翻页</p>
+<h4 id="head"><a href="#head" class="headerlink" title="head"></a>head</h4><p>查看文件的开头部分的内容</p>
+<ul>
+<li><strong>-q</strong>：隐藏文件名，默认是隐藏</li>
+<li><strong>-v</strong>：显示文件名</li>
+<li>**-c&lt;数目&gt;**：显示的字节数。</li>
+<li>**-n&lt;行数&gt;**：显示的行数。</li>
+</ul>
+<h4 id="tail"><a href="#tail" class="headerlink" title="tail"></a>tail</h4><p>会把文本文件里的最尾部的内容显示在屏幕上</p>
+<ul>
+<li><strong>-f</strong>：循环读取</li>
+<li><strong>-q</strong>：隐藏文件名，默认隐藏</li>
+<li><strong>-v</strong>：显示文件名</li>
+<li>**-c&lt;数目&gt;**：显示的字节数</li>
+<li>**-n&lt;行数&gt;**：显示文件的尾部 n 行内容</li>
+<li><strong>-s</strong>：与-f合用,表示在每次反复的间隔休眠S秒</li>
+</ul>
+<h4 id="grep-1"><a href="#grep-1" class="headerlink" title="grep"></a>grep</h4><p>针对文件内容进行过滤，本工具属于文本三剑客.</p>
+<p>实例</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@xwz ~]<span class="comment"># grep &#x27;root&#x27; /etc/passwd</span></span><br><span class="line"><span class="comment"># 在/etc/passwd的文件中找出有root的行</span></span><br><span class="line">[root@xwz ~]<span class="comment"># grep &#x27;^root&#x27; /etc/passwd</span></span><br><span class="line"><span class="comment"># 在/etc/passwd中找出root开头的行</span></span><br><span class="line">[root@xwz ~]<span class="comment"># grep &#x27;bash$&#x27; /etc/passwd</span></span><br><span class="line"><span class="comment"># 在/etc/passwd中找出bash结尾的行</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="文本文件编辑"><a href="#文本文件编辑" class="headerlink" title="文本文件编辑"></a>文本文件编辑</h3><ul>
+<li><strong>vi</strong>：所有的 Unix Like 系统都会内建 vi 文本编辑器，其他的文本编辑器则不一定会存在。</li>
+<li><strong>vim</strong>：具有程序编辑的能力，可以主动的以字体颜色辨别语法的正确性，方便程序设计。</li>
+</ul>
+<h4 id="vim-vi的使用"><a href="#vim-vi的使用" class="headerlink" title="vim&#x2F;vi的使用"></a>vim&#x2F;vi的使用</h4><h5 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h5><p>用户刚刚启动 vi&#x2F;vim，便进入了命令模式。</p>
+<p>此状态下敲击键盘动作会被Vim识别为命令，而非输入字符。比如我们此时按下<code>i</code>，并不会输入一个字符，<code>i</code>被当作了一个命令。</p>
+<p>以下是常用的几个命令：</p>
+<ul>
+<li><strong>i</strong>切换到输入模式，以输入字符。</li>
+<li><strong>x</strong>删除当前光标所在处的字符。</li>
+<li>**:**切换到末行模式，以在最底一行输入命令。</li>
+</ul>
+<p>若想要编辑文本：启动Vim，进入了命令模式，按下i，切换到输入模式。</p>
+<p>命令模式只有一些最基本的命令，因此仍要依靠末行模式输入更多命令。</p>
+<p>按键说明：</p>
+<p>移动光标的方法</p>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>那个 n 表示『数字』，例如 20 。按下数字后再按空格键，光标会向右移动这一行的 n 个字符。例如 20 则光标会向后面移动 20 个字符距离。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$ 或功能键[End]</td>
+<td>移动到这一行的最后面字符处(常用)</td>
+</tr>
+<tr>
+<td>0 或功能键[Home]</td>
+<td>v这是数字『 0 』：移动到这一行的最前面字符处 (常用)</td>
+</tr>
+<tr>
+<td>gg</td>
+<td>移动到这个档案的第一行，相当于 1G 啊！ (常用)</td>
+</tr>
+<tr>
+<td>n</td>
+<td>n 为数字。光标向下移动 n 行(常用)</td>
+</tr>
+<tr>
+<td>G</td>
+<td>移动到这个档案的最后一行(常用)</td>
+</tr>
+</tbody></table>
+<p>文本的搜索与替换</p>
+<table>
+<thead>
+<tr>
+<th align="left">&#x2F;word</th>
+<th align="left">向光标之下寻找一个名称为 word 的字符串。 (常用)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">n</td>
+<td align="left">这个 n 是英文按键。代表重复前一个搜寻的动作。</td>
+</tr>
+<tr>
+<td align="left">:n1,n2s&#x2F;word1&#x2F;word2&#x2F;g</td>
+<td align="left">n1 与 n2 为数字。在第 n1 与 n2 行之间寻找 word1 这个字符串，并将该字符串取代为 word2 (常用)</td>
+</tr>
+<tr>
+<td align="left">:1,$s&#x2F;word1&#x2F;word2&#x2F;g 或 :%s&#x2F;word1&#x2F;word2&#x2F;g</td>
+<td align="left">从第一行到最后一行寻找 word1 字符串，并将该字符串取代为 word2 ！(常用)</td>
+</tr>
+<tr>
+<td align="left">:1,$s&#x2F;word1&#x2F;word2&#x2F;gc 或 :%s&#x2F;word1&#x2F;word2&#x2F;gc</td>
+<td align="left">从第一行到最后一行寻找 word1 字符串，并将该字符串取代为 word2 ！且在取代前显示提示字符给用户确认 (confirm) 是否需要取代！(常用)</td>
+</tr>
+</tbody></table>
+<p>删除、剪切，复制与粘贴</p>
+<table>
+<thead>
+<tr>
+<th>dd</th>
+<th>删除&#x2F;剪切光标所在的那一整行(常用)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ndd</td>
+<td>n 为数字。删除&#x2F;剪切光标所在的向下 n 行，例如 20dd 则是删除 20 行 (常用)</td>
+</tr>
+<tr>
+<td>d1G</td>
+<td>删除光标所在到第一行的所有数据</td>
+</tr>
+<tr>
+<td>dG</td>
+<td>删除光标所在到最后一行的所有数据</td>
+</tr>
+<tr>
+<td>yy</td>
+<td>复制游标所在的那一行(常用)</td>
+</tr>
+<tr>
+<td>nyy</td>
+<td>n 为数字。复制光标所在的向下 n 行，例如 20yy 则是复制 20 行(常用)</td>
+</tr>
+<tr>
+<td>p, P</td>
+<td>p 为将已复制的数据在光标下一行贴上，P 则为贴在光标上一行！ 举例来说，我目前光标在第 20 行，且已经复制了 10 行数据。则按下 p 后， 那 10 行数据会贴在原本的 20 行之后，亦即由 21 行开始贴。但如果是按下 P 呢？ 那么原本的第 20 行会被推到变成 30 行。 (常用)</td>
+</tr>
+<tr>
+<td>u</td>
+<td>复原前一个动作。(常用)</td>
+</tr>
+<tr>
+<td>[Ctrl]+r</td>
+<td>重做上一个动作。(常用)</td>
+</tr>
+<tr>
+<td>.</td>
+<td>重复前一个动作。 如果你想要重复删除、重复贴上等等动作，按下小数点『.』就好了！ (常用)</td>
+</tr>
+</tbody></table>
+<p>进入输入或取代的编辑模式</p>
+<table>
+<thead>
+<tr>
+<th align="left">i, I</th>
+<th align="left">进入输入模式(Insert mode)： i 为『从目前光标所在处输入』， I 为『在目前所在行的第一个非空格符处开始输入』。 (常用)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">a, A</td>
+<td align="left">进入输入模式(Insert mode)： a 为『从目前光标所在的下一个字符处开始输入』， A 为『从光标所在行的最后一个字符处开始输入』。(常用)</td>
+</tr>
+<tr>
+<td align="left">o, O</td>
+<td align="left">进入输入模式(Insert mode)： 这是英文字母 o 的大小写。o 为在目前光标所在的下一行处输入新的一行； O 为在目前光标所在的上一行处输入新的一行！(常用)</td>
+</tr>
+<tr>
+<td align="left">r, R</td>
+<td align="left">进入取代模式(Replace mode)： r 只会取代光标所在的那一个字符一次；R会一直取代光标所在的文字，直到按下 ESC 为止；(常用)</td>
+</tr>
+<tr>
+<td align="left">[Esc]</td>
+<td align="left">退出编辑模式，回到一般模式中(常用)</td>
+</tr>
+</tbody></table>
+<p>末行模式下的储存，离开等指令</p>
+<table>
+<thead>
+<tr>
+<th align="left">:w</th>
+<th align="left">将编辑的数据写入硬盘中(常用)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">:w!</td>
+<td align="left">若文件属性为『只读』时，强制写入该文件。不过，到底能不能写入， 还是跟你对该文件的权限有关</td>
+</tr>
+<tr>
+<td align="left">:q</td>
+<td align="left">离开 vi (常用)</td>
+</tr>
+<tr>
+<td align="left">:q!</td>
+<td align="left">若曾修改过文件，又不想储存，使用 ! 为强制离开不储存。</td>
+</tr>
+<tr>
+<td align="left">:wq</td>
+<td align="left">储存后离开，若为 :wq! 则为强制储存后离开 (常用)</td>
+</tr>
+<tr>
+<td align="left">ZZ</td>
+<td align="left">这是大写的 Z 喔！如果修改过，保存当前文件，然后退出！效果等同于(保存并退出)</td>
+</tr>
+<tr>
+<td align="left">:x</td>
+<td align="left">效果等同于(保存并退出)</td>
+</tr>
+<tr>
+<td align="left">:X</td>
+<td align="left">大写的X，用于加密文件</td>
+</tr>
+<tr>
+<td align="left">ZQ</td>
+<td align="left">不保存，强制退出。效果等同于**:q!**。</td>
+</tr>
+<tr>
+<td align="left">:w [filename]</td>
+<td align="left">将编辑的数据储存成另一个文件（类似文件另存为）</td>
+</tr>
+<tr>
+<td align="left">:r [filename]</td>
+<td align="left">在编辑的数据中，读入另一个文件的数据。亦即将 『filename』 这个文件内容加到光标所在行后面</td>
+</tr>
+<tr>
+<td align="left">:n1,n2 w [filename]</td>
+<td align="left">将 n1 到 n2 的内容储存成 filename 这个文件。</td>
+</tr>
+<tr>
+<td align="left">:! command</td>
+<td align="left">暂时离开 vi 到bash命令行下执行 command 的显示结果！例如 『:! ls &#x2F;home』即可在 vi 当中察看 &#x2F;home 底下以 ls 输出的文件信息！</td>
+</tr>
+</tbody></table>
+<p>vim环境变量修改</p>
+<table>
+<thead>
+<tr>
+<th align="left">:set nu</th>
+<th align="left">显示行号，设定之后，会在每一行的前缀显示该行的行号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">:set nonu</td>
+<td align="left">与 set nu 相反，为取消行号！</td>
+</tr>
+</tbody></table>
+<h2 id="文件基本属性与文件查找"><a href="#文件基本属性与文件查找" class="headerlink" title="文件基本属性与文件查找"></a>文件基本属性与文件查找</h2><h3 id="文件时间"><a href="#文件时间" class="headerlink" title="文件时间"></a>文件时间</h3><h4 id="stat"><a href="#stat" class="headerlink" title="stat"></a>stat</h4><p>用于显示文件时间和 inode 内容，inode相关的知识会在后面的磁盘管理章节详细讲解，这边主要来看文件的时间</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># export LANG=&quot;en_US.UTF-8&quot;</span></span><br><span class="line"><span class="comment"># 改回中文是LANG=&quot;zh_CN.UTF-8&quot;</span></span><br><span class="line">[root@localhost ~]<span class="comment"># stat anaconda-ks.cfg </span></span><br><span class="line">  File: ‘anaconda-ks.cfg’</span><br><span class="line">  Size: 1241          Blocks: 8          IO Block: 4096   regular file</span><br><span class="line">Device: fd00h/64768d    Inode: 33574979    Links: 1</span><br><span class="line">Access: (0600/-rw-------)  Uid: (    0/    root)   Gid: (    0/    root)</span><br><span class="line">Context: system_u:object_r:admin_home_t:s0</span><br><span class="line">Access: 2021-04-04 17:54:09.700844151 +0800</span><br><span class="line">Modify: 2021-04-04 16:53:30.524854041 +0800</span><br><span class="line">Change: 2021-04-04 16:53:30.524854041 +0800</span><br><span class="line"> Birth: -</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Access：访问时间，也叫atime<ul>
+<li>当文件被访问的时候，这个时间就会发生改变</li>
+<li>Linux文件运行的时候查看文件又频繁数量又大，如果每次atime发生变化的时候都记入硬盘，或造成很大的压力。RHEL6开始relatime，atime延迟修改，必须满足其中一个条件：<ul>
+<li>自上次atime修改后，已达到86400秒</li>
+<li>发生写操作时</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Modify：修改时间，也叫mtime<ul>
+<li>当文件内容发生变化的时候，这个时间就会发生改变</li>
+</ul>
+</li>
+<li>Change：改变时间，也叫ctime<ul>
+<li>当文件状态被改变的时候，这个时间就会发生修改</li>
+</ul>
+</li>
+</ul>
+<h3 id="文件类型"><a href="#文件类型" class="headerlink" title="文件类型"></a>文件类型</h3><p>判断文件类型</p>
+<h3 id="文件查找"><a href="#文件查找" class="headerlink" title="文件查找"></a>文件查找</h3><h4 id="which"><a href="#which" class="headerlink" title="which"></a>which</h4><p>用于查找文件</p>
+<p>which指令会在环境变量<code>$PATH</code>设置的目录里查找符合条件的文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">which [文件...]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="find"><a href="#find" class="headerlink" title="find"></a>find</h4><p>实时查找工具，通过遍历指定路径下的文件系统完成文件查找</p>
+<p>工作特点:</p>
+<ul>
+<li>查找速度略慢</li>
+<li>精确查找</li>
+<li>实时查找</li>
+<li>可以满足多种条件匹配</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">find [选项] [路径] [查找条件 + 处理动作]</span><br><span class="line">查找路径：指定具体目录路径，默认是当前文件夹</span><br><span class="line">查找条件：指定的查找标准（文件名/大小/类型/权限等），默认是找出所有文件</span><br><span class="line">处理动作：对符合条件的文件做什么操作，默认输出屏幕</span><br></pre></td></tr></table></figure>
+
+<h5 id="查找条件"><a href="#查找条件" class="headerlink" title="查找条件"></a>查找条件</h5><ul>
+<li><p>根据文件名查找</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# find /etc -name &quot;ifcfg-ens33&quot;</span><br><span class="line">[root@localhost ~]# find /etc -iname &quot;ifcfg-ens33&quot;    # 忽略大小写</span><br><span class="line">[root@localhost ~]# find /etc -iname &quot;ifcfg*&quot;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>按文件大小</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# find /etc -size +5M    # 大于5M</span><br><span class="line">[root@localhost ~]# find /etc -size 5M    # 等于5M</span><br><span class="line">[root@localhost ~]# find /etc -size -5M    # 小于5M</span><br><span class="line">[root@localhost ~]# find /etc -size +5M -ls    # 找到的处理动作-ls</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>指定查找的目录深度</p>
+</li>
+<li><p>按时间找</p>
+</li>
+<li><p>按照文件属主、属组找，文件的属主和属组，会在下一篇详细讲解。</p>
+</li>
+<li><p>按文件类型</p>
+</li>
+<li><p>按文件权限，文件权限会在下一篇详细讲解</p>
+</li>
+<li><p>按正则表达式</p>
+</li>
+<li><p>条件组合</p>
+<ul>
+<li><strong>-a</strong>：多个条件and并列</li>
+<li><strong>-o</strong>：多个条件or并列</li>
+<li><strong>-not</strong>：条件取反</li>
+</ul>
+</li>
+</ul>
+<h2 id="用户权限管理"><a href="#用户权限管理" class="headerlink" title="用户权限管理"></a>用户权限管理</h2><h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>systmed 是一个用户空间的程序，属于应用程序，不属于 Linux 内核范畴。Systemd 是 Linux 系统中最新的初始化系统（init），它主要的设计目标是克服 sysvinit（这个是centos6中的初始化系统）固有的缺点，提高系统的启动速度。</p>
+<p>systemd 的主要命令行工具是<code>systemctl</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl [选项...] &#123;命令&#125; ...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p> systemctl常用命令:</p>
+<p> start :启动服务</p>
+<p>stop :停止服务</p>
+<p>status :检查服务状态检查服务是否启动</p>
+<p>enable :启用开机自启服务</p>
+<h6 id="查看系统中的进程"><a href="#查看系统中的进程" class="headerlink" title="查看系统中的进程"></a>查看系统中的进程</h6><p>ps</p>
+<p>常用组合：ps aux, ps -aux, ps -ef, ps -efH</p>
+<ul>
+<li><p>按照CPU使用率排序查看所有进程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ps aux --sort %cpu     # 递增</span><br><span class="line">[root@localhost ~]# ps aux --sort -%cpu    # 递减</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>按照实际内存使用排序查看所有进程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ps aux --sort rss     # 递增</span><br><span class="line">[root@localhost ~]# ps aux --sort -rss    # 递减</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>top 实时显示 process 的动态</p>
+<h6 id="删除执行中的程序和工作"><a href="#删除执行中的程序和工作" class="headerlink" title="删除执行中的程序和工作"></a>删除执行中的程序和工作</h6><p>kill</p>
+<p>常用命令</p>
+<p>kill -9 ‘ ‘</p>
+<p>kill -15 ‘ ‘</p>
+<p>pkill</p>
+<p>pkill 用于杀死一个进程，与 kill 不同的是它会杀死指定名字的所有进程，类似于 killall 命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pkill [选项]  name</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>name</strong>： 进程名</li>
+<li><strong>-u</strong>：指定用户名</li>
+<li><strong>-t</strong>：指定终端</li>
+</ul>
+<h6 id="进程优先级"><a href="#进程优先级" class="headerlink" title="进程优先级"></a>进程优先级</h6><p>nice</p>
+<p> 使用ps查看</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ps axo pid,command,nice --sort=nice</span><br><span class="line">[root@localhost ~]# ps axo pid,command,nice,cls --sort=-nice</span><br></pre></td></tr></table></figure>
+
+
+<p>PR</p>
+<p>jobs</p>
+<p>jobs 命令可以用来查看当前终端放入后台的任务</p>
+<ul>
+<li>在命令后面加入<code>空格 &amp;</code>。使用这种方法放入后台的命令，在后台处于执行状态</li>
+<li>命令执行过裎中按 Ctrl+Z 快捷键，命令在后台处于暂停状态</li>
+</ul>
+<p>fg 命令用于把后台工作恢复到前台执行</p>
+
+      </section>
+
+      
+      
+        <nav class="article-nav">
+          
+          
+            <div class="article-nav-item layout-padding">
+  <article class="card-container article-nav-card content-padding--primary soft-size--large soft-style--box">
+    
+    <div class="card-text">
+      
+        <a href="/2024/07/01/python%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" itemprop="url">
+          <h2 class="card-text--title text-ellipsis">python基础知识</h2>
+        </a>
+      
+      <div class="card-text--row">Older</div>
+    </div>
+  </article>
+</div>
+          
+        </nav>
+      
+
+      <section class="page-message-container layout-padding">
+        
+
+
+  
+  
+
+  
+  
+
+
+      </section>
+    </div>
+    <div class="widget-info">
+      <section class="widget-author widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-body">
+    
+      <img src="https://pic4.zhimg.com/v2-b2225a535c4cde5c250f729785eff9a1_r.jpg?source=1940ef5c" class="soft-size--round soft-style--box" alt="Mr Zhou">
+    
+    
+      <h2>Mr Zhou</h2>
+    
+    
+      <p>顶峰相见</p>
+    
+
+    <div class="count-box">
+      <div class="count-box--item">
+        <svg class="icon icon-article" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M240.51564747 647.74217627h196.07203239c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806V165.10332731c0-33.18142087-30.16492806-60.32985613-60.32985612-60.32985611H245.04038668C225.43318342 104.7734712 210.35071939 119.85593522 210.35071939 139.46313845V617.57724821c0 16.59071043 13.57421762 30.16492806 30.16492808 30.16492806z m663.62841731-452.47392089v482.63884894c0 33.18142087-27.14843525 60.32985613-60.32985612 60.32985613H180.18579134c-33.18142087 0-60.32985613-27.14843525-60.32985612-60.32985613V195.26825538c-49.77213131 0-90.49478418 40.72265287-90.49478417 90.49478417v452.4739209c0 49.77213131 40.72265287 90.49478418 90.49478417 90.49478417h286.56681657c16.59071043 0 30.16492806 13.57421762 30.16492807 30.16492807s13.57421762 30.16492806 30.16492805 30.16492806h90.49478418c16.59071043 0 30.16492806-13.57421762 30.16492805-30.16492806s13.57421762-30.16492806 30.16492807-30.16492807h286.56681657c49.77213131 0 90.49478418-40.72265287 90.49478417-90.49478417V285.76303955c0-49.77213131-40.72265287-90.49478418-90.49478417-90.49478417zM587.41232014 647.74217627h191.54729318c19.60720323 0 34.68966726-15.08246403 34.68966729-34.68966727V134.93839925c0-16.59071043-13.57421762-30.16492806-30.16492808-30.16492805H617.57724821c-30.16492806 0-60.32985613 27.14843525-60.32985612 60.32985611v452.4739209c0 16.59071043 13.57421762 30.16492806 30.16492805 30.16492806z" fill="currentColor"></path>
+</svg>
+        <span>6</span>
+      </div>
+      <div class="count-box--item">
+        <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M900.3614811 257.09082106h-339.81629553l-67.96326003-101.9448889c-19.41807444-29.12711113-48.54518557-43.69066667-82.52681443-43.69066667H123.6385189c-53.39970333 0-97.09036999 43.69066667-97.09037113 97.09036999v582.54222222c0 53.39970333 43.69066667 97.09036999 97.09037113 97.09037002h776.7229622c53.39970333 0 97.09036999-43.69066667 97.09037113-97.09037002V354.18119104c0-53.39970333-43.69066667-97.09036999-97.09037113-97.09036998z m-97.09036999 242.72592554H220.72888889c-24.27259221 0-48.54518557-24.27259221-48.54518556-48.54518556s24.27259221-48.54518557 48.54518556-48.54518444h582.54222222c24.27259221 0 48.54518557 24.27259221 48.54518556 48.54518444s-24.27259221 48.54518557-48.54518556 48.54518556z" fill="currentColor"></path>
+</svg>
+        0
+      </div>
+      <div class="count-box--item">
+        <svg class="icon icon-tags" viewBox="0 0 1098 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M283.42180005 272q0-28.38857157-20.09142843-48.48000001t-48.47999998-20.09142842-48.48000002 20.09142842-20.09142846 48.48000001 20.09142846 48.48 48.48000002 20.09142843 48.47999998-20.09142843 20.09142843-48.48zM855.0332285 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.03999997 263.58857157q-20.9142853 19.81714313-48.75428534 19.81714312-28.38857157 0-48.20571468-19.81714312l-383.04-383.58857157q-20.36571468-19.81714313-34.55999999-54.10285688t-14.19428534-62.6742853l0-222.85714313q0-27.84000002 20.36571469-48.20571469t48.2057147-20.36571466l222.85714313 0q28.38857157 0 62.6742853 14.19428529t54.65142842 34.55999999l383.04000001 382.49142843q19.81714313 20.9142853 19.81714314 48.75428532zM1060.74751475 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.04 263.58857157q-20.9142853 19.81714313-48.75428531 19.81714312-19.26857155 0-31.61142843-7.47428531t-28.38857159-24.13714314l251.79428534-251.7942853q19.81714313-19.81714313 19.81714308-48.20571469 0-27.84000002-19.81714308-48.75428531l-383.04000001-382.49142845q-20.36571468-20.36571468-54.65142842-34.55999999t-62.67428532-14.19428534l120 0q28.38857157 0 62.67428532 14.19428534t54.65142842 34.55999999l383.03999998 382.49142845q19.81714313 20.9142853 19.81714314 48.75428531z" fill="currentColor"></path>
+</svg>
+        5
+      </div>
+    </div>
+  </div>
+</section>
+
+      
+
+      
+<section class="widet-notice widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-notice" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M512 945.02305225v28.15620663a24.27259221 24.27259221 0 0 1-24.27259221 24.27259335H394.0352a48.54518557 48.54518557 0 0 1-41.74885888-23.78714112l-110.68302222-184.47170332a132.04290333 132.04290333 0 0 1-17.47626667-48.54518557h118.4502511a200.97706667 200.97706667 0 0 1 76.21594113 14.56355556l20.38897777 133.49925888a48.54518557 48.54518557 0 0 0 36.40888888 27.67075555l16.01991111 2.91271112a24.27259221 24.27259221 0 0 1 20.38897778 25.72894889zM997.45185223 463.45481443a194.18074112 194.18074112 0 0 1-38.8361489 116.50844445 24.75804445 24.75804445 0 0 1-36.4088889 0l-34.95253333-34.95253333a24.27259221 24.27259221 0 0 1-2.91271111-30.58346667 97.09036999 97.09036999 0 0 0 0-106.79940665 24.27259221 24.27259221 0 0 1 2.91271111-30.58346666l34.95253333-34.95253334a24.75804445 24.75804445 0 0 1 18.93262223-7.28177777 26.2144 26.2144 0 0 1 17.47626667 9.70903665A194.18074112 194.18074112 0 0 1 997.45185223 463.45481443z m-194.18074112-388.36148111v776.72296335a48.54518557 48.54518557 0 0 1-48.54518556 48.54518443h-28.64165888a48.54518557 48.54518557 0 0 1-33.98163001-14.07810332l-145.63555556-143.20829668A291.27111111 291.27111111 0 0 0 342.57730333 657.63555556H172.18370333a145.63555556 145.63555556 0 0 1-145.63555556-145.63555556v-97.09036999a145.63555556 145.63555556 0 0 1 145.63555556-145.63555556h170.3936a291.27111111 291.27111111 0 0 0 206.31703779-85.43952668l145.63555555-143.20829554a48.54518557 48.54518557 0 0 1 33.98162888-14.07810446H754.72592555a48.54518557 48.54518557 0 0 1 48.54518556 48.54518555z" fill="currentColor"></path>
+</svg>
+    <span>NOTICE</span>
+  </div>
+  <div class="widget-body">
+    <p>flex-block主题部分重构，详情查看https://github.com/miiiku/flex-block</p>
+  </div>
+</section>
+
+
+      <section class="widget-categories widget-item layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-categories" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M900.3614811 257.09082106h-339.81629553l-67.96326003-101.9448889c-19.41807444-29.12711113-48.54518557-43.69066667-82.52681443-43.69066667H123.6385189c-53.39970333 0-97.09036999 43.69066667-97.09037113 97.09036999v582.54222222c0 53.39970333 43.69066667 97.09036999 97.09037113 97.09037002h776.7229622c53.39970333 0 97.09036999-43.69066667 97.09037113-97.09037002V354.18119104c0-53.39970333-43.69066667-97.09036999-97.09037113-97.09036998z m-97.09036999 242.72592554H220.72888889c-24.27259221 0-48.54518557-24.27259221-48.54518556-48.54518556s24.27259221-48.54518557 48.54518556-48.54518444h582.54222222c24.27259221 0 48.54518557 24.27259221 48.54518556 48.54518444s-24.27259221 48.54518557-48.54518556 48.54518556z" fill="currentColor"></path>
+</svg>
+      <span>CATEGORIES</span>
+  </div>
+  <div class="widget-body">
+    <ul class="categories-list">
+      
+    </ul>
+  </div>
+</section>
+
+      <section class="widget-tags widget-item  layout-margin content-padding--primary soft-size--large soft-style--box">
+  <div class="widget-title">
+    <svg class="icon icon-tags" viewBox="0 0 1098 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M283.42180005 272q0-28.38857157-20.09142843-48.48000001t-48.47999998-20.09142842-48.48000002 20.09142842-20.09142846 48.48000001 20.09142846 48.48 48.48000002 20.09142843 48.47999998-20.09142843 20.09142843-48.48zM855.0332285 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.03999997 263.58857157q-20.9142853 19.81714313-48.75428534 19.81714312-28.38857157 0-48.20571468-19.81714312l-383.04-383.58857157q-20.36571468-19.81714313-34.55999999-54.10285688t-14.19428534-62.6742853l0-222.85714313q0-27.84000002 20.36571469-48.20571469t48.2057147-20.36571466l222.85714313 0q28.38857157 0 62.6742853 14.19428529t54.65142842 34.55999999l383.04000001 382.49142843q19.81714313 20.9142853 19.81714314 48.75428532zM1060.74751475 580.57142843q0 28.38857157-19.81714313 48.2057147l-263.04 263.58857157q-20.9142853 19.81714313-48.75428531 19.81714312-19.26857155 0-31.61142843-7.47428531t-28.38857159-24.13714314l251.79428534-251.7942853q19.81714313-19.81714313 19.81714308-48.20571469 0-27.84000002-19.81714308-48.75428531l-383.04000001-382.49142845q-20.36571468-20.36571468-54.65142842-34.55999999t-62.67428532-14.19428534l120 0q28.38857157 0 62.67428532 14.19428534t54.65142842 34.55999999l383.03999998 382.49142845q19.81714313 20.9142853 19.81714314 48.75428531z" fill="currentColor"></path>
+</svg>
+    <span>TAGS</span>
+  </div>
+  <div class="widget-body">
+    <div class="tags-cloud">
+      <a href="/tags/C/" style="font-size: 10px;" class="tags-cloud-0">C++</a> <a href="/tags/Linux/" style="font-size: 10px;" class="tags-cloud-0">Linux</a> <a href="/tags/python/" style="font-size: 10px;" class="tags-cloud-0">python</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;" class="tags-cloud-0">博客</a> <a href="/tags/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" style="font-size: 10px;" class="tags-cloud-0">文件管理</a>
+    </div>
+  </div>
+</section>
+    </div>
+  </article>
+</div>
+
+    <!-- footer container -->
+<footer id="footer" class="footer">
+  <div class="footer-container">
+    
+    <div class="social-icons">
+      
+        
+      
+        
+      
+        
+      
+        
+          <a href="https://github.com/miiiku/" class="soft-size--primary soft-style--box" target="_blank" rel="noopener noreferrer">
+            <svg class="icon icon-github" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M64.6 512c0 195.6 125.4 361.9 300.1 422.9 23.5 5.9 19.9-10.8 19.9-22.2v-77.6c-135.8 15.9-141.3-74-150.5-89-18.5-31.5-61.9-39.5-49-54.5 31-15.9 62.5 4 98.9 58 26.4 39.1 77.9 32.5 104.1 26 5.7-23.5 17.9-44.5 34.7-60.9-140.7-25.2-199.4-111.1-199.4-213.3 0-49.5 16.4-95.1 48.4-131.8-20.4-60.6 1.9-112.4 4.9-120.1 58.2-5.2 118.5 41.6 123.3 45.3 33.1-8.9 70.8-13.7 112.9-13.7 42.4 0 80.3 4.9 113.5 13.9 11.3-8.6 67.3-48.8 121.4-43.9 2.9 7.7 24.7 58.3 5.5 118.1 32.5 36.8 49 82.8 49 132.4 0 102.3-59 188.3-200.2 213.2 23.5 23.3 38.1 55.5 38.1 91.1v112.7c0.8 9 0 17.9 15.1 17.9C832.7 877 960.4 709.4 960.4 512.1c0-247.5-200.6-447.9-447.9-447.9C265 64.1 64.6 264.5 64.6 512z"></path>
+</svg>
+          </a>
+        
+      
+        
+          <a href="https://twitter.com/guanquanhong" class="soft-size--primary soft-style--box" target="_blank" rel="noopener noreferrer">
+            <svg class="icon icon-twitter" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M962.285714 233.142857q-38.285714 56-92.571429 95.428571 0.571429 8 0.571429 24 0 74.285714-21.714286 148.285714t-66 142-105.428571 120.285714-147.428571 83.428571-184.571429 31.142857q-154.857143 0-283.428571-82.857143 20 2.285714 44.571429 2.285714 128.571429 0 229.142857-78.857143-60-1.142857-107.428571-36.857143t-65.142857-91.142857q18.857143 2.857143 34.857143 2.857143 24.571429 0 48.571429-6.285714-64-13.142857-106-63.714286t-42-117.428571l0-2.285714q38.857143 21.714286 83.428571 23.428571-37.714286-25.142857-60-65.714286t-22.285714-88q0-50.285714 25.142857-93.142857 69.142857 85.142857 168.285714 136.285714t212.285714 56.857143q-4.571429-21.714286-4.571429-42.285714 0-76.571429 54-130.571429t130.571429-54q80 0 134.857143 58.285714 62.285714-12 117.142857-44.571429-21.142857 65.714286-81.142857 101.714286 53.142857-5.714286 106.285714-28.571429z"></path>
+</svg>
+          </a>
+        
+      
+    </div>
+     
+    <p>&copy; 2024 <a href="/" target="_blank">wuguangzhou</a></p>
+
+    
+
+    <p>Powered by <a href="https://hexo.io" target="_blank" rel="noopener noreferrer">Hexo</a> Theme - <a href="https://github.com/miiiku/flex-block" target="_blank" rel="noopener noreferrer author">flex-block</a></p>
+
+    <p>
+      <a href="javascript:;" id="theme-light">🌞 浅色</a>
+      <a href="javascript:;" id="theme-dark">🌛 深色</a>
+      <a href="javascript:;" id="theme-auto">🤖️ 自动</a>
+    </p>
+  </div>
+</footer>
+  </div>
+
+  <div class="back-to-top-fixed soft-size--round soft-style--box">
+    <svg class="icon icon-back-to-top" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <path d="M725.333333 426.666667c-12.8 0-21.333333-4.266667-29.866667-12.8l-213.333333-213.333333c-17.066667-17.066667-17.066667-42.666667 0-59.733333s42.666667-17.066667 59.733333 0l213.333333 213.333333c17.066667 17.066667 17.066667 42.666667 0 59.733333C746.666667 422.4 738.133333 426.666667 725.333333 426.666667z"></path>
+      <path d="M298.666667 426.666667c-12.8 0-21.333333-4.266667-29.866667-12.8-17.066667-17.066667-17.066667-42.666667 0-59.733333l213.333333-213.333333c17.066667-17.066667 42.666667-17.066667 59.733333 0s17.066667 42.666667 0 59.733333l-213.333333 213.333333C320 422.4 311.466667 426.666667 298.666667 426.666667z"></path>
+      <path d="M512 896c-25.6 0-42.666667-17.066667-42.666667-42.666667L469.333333 170.666667c0-25.6 17.066667-42.666667 42.666667-42.666667s42.666667 17.066667 42.666667 42.666667l0 682.666667C554.666667 878.933333 537.6 896 512 896z"></path>
+    </svg>
+  </div>
+
+  
+  <!-- aplayer -->
+
+
+<!-- dplayer -->
+
+
+<!-- copy button  -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
+
+<!-- https://clipboardjs.com/ -->
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+  <!-- 尾部用户自定义相关内容 -->
+</body>
+</html>
