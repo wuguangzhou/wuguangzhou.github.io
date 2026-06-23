@@ -1,305 +1,307 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>内容管理 · 周游·记</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <style>
-    :root {
-      --bg: #0A0D14; --surface: #131722; --border: #1E2330;
-      --text: #E3E6EC; --dim: #8890A0; --accent: #7B8CA8;
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); }
-    
-    /* Auth screen */
-    #auth {
-      display:flex; align-items:center; justify-content:center; min-height:100vh;
-    }
-    .auth-card {
-      background:var(--surface); border:1px solid var(--border); border-radius:16px;
-      padding:48px 40px; max-width:440px; width:90%; text-align:center;
-    }
-    .auth-card h1 { font-family:'Playfair Display',serif; font-size:1.6rem; margin-bottom:8px; }
-    .auth-card p { color:var(--dim); font-size:0.9rem; margin-bottom:28px; }
-    .auth-card label { display:block; text-align:left; font-size:0.8rem; color:var(--dim); margin-bottom:6px; }
-    .auth-card input {
-      width:100%; padding:12px 16px; background:var(--bg); border:1px solid var(--border);
-      border-radius:8px; color:var(--text); font-size:0.9rem; margin-bottom:16px;
-    }
-    .auth-card input:focus { outline:none; border-color:var(--accent); }
-    .auth-card button {
-      width:100%; padding:12px; background:var(--accent); color:var(--bg);
-      border:none; border-radius:8px; font-size:0.95rem; font-weight:500; cursor:pointer;
-    }
-    .auth-card button:hover { opacity:0.9; }
-    .auth-card .meta { font-size:0.75rem; color:#505660; margin-top:20px; line-height:1.6; }
-    .auth-card .meta a { color:var(--accent); }
-    #auth-error { color:#c44; font-size:0.82rem; margin-bottom:12px; display:none; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>内容管理 · 周游·记</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<style>
+  :root { --bg:#0A0D14; --surface:#131722; --border:#1E2330; --text:#E3E6EC; --dim:#8890A0; --accent:#7B8CA8; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); }
 
-    /* Admin panel */
-    #app { display:none; max-width:900px; margin:0 auto; padding:80px 24px 60px; }
-    .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:40px; }
-    .topbar h2 { font-family:'Playfair Display',serif; font-size:1.8rem; }
-    .topbar button { padding:8px 20px; background:var(--accent); color:var(--bg); border:none; border-radius:8px; cursor:pointer; font-size:0.85rem; }
-    .tabbar { display:flex; gap:4px; margin-bottom:32px; }
-    .tab { padding:8px 20px; background:var(--surface); border:1px solid var(--border); border-radius:8px 8px 0 0; cursor:pointer; color:var(--dim); font-size:0.9rem; }
-    .tab.active { background:var(--accent); color:var(--bg); border-color:var(--accent); }
-    .card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; margin-bottom:8px; }
-    .card h3 { font-size:1rem; margin-bottom:4px; }
-    .card .meta { color:var(--dim); font-size:0.8rem; margin-bottom:8px; }
-    .card .actions { margin-top:12px; display:flex; gap:8px; }
-    .card .actions button { padding:6px 14px; border:1px solid var(--border); border-radius:6px; background:transparent; color:var(--dim); cursor:pointer; font-size:0.8rem; }
-    .card .actions button:hover { border-color:var(--accent); color:var(--accent); }
-    .card .actions button.danger:hover { border-color:#c44; color:#c44; }
+  /* Auth */
+  #auth-box { display:flex; align-items:center; justify-content:center; min-height:100vh; }
+  #auth-box > div { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:48px 40px; max-width:440px; width:90%; text-align:center; }
+  #auth-box h1 { font-family:'Playfair Display',serif; font-size:1.6rem; margin-bottom:8px; }
+  #auth-box p { color:var(--dim); font-size:0.9rem; margin-bottom:28px; }
+  #auth-box label { display:block; text-align:left; font-size:0.8rem; color:var(--dim); margin-bottom:6px; }
+  #auth-box input { width:100%; padding:12px 16px; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:0.9rem; margin-bottom:16px; }
+  #auth-box input:focus { outline:none; border-color:var(--accent); }
+  #auth-box button { width:100%; padding:12px; background:var(--accent); color:var(--bg); border:none; border-radius:8px; font-size:0.95rem; font-weight:500; cursor:pointer; }
+  #auth-error { color:#c44; font-size:0.82rem; margin-bottom:12px; display:none; }
+  #auth-box .meta { font-size:0.75rem; color:#505660; margin-top:20px; line-height:1.6; }
+  #auth-box .meta a { color:var(--accent); }
 
-    /* Editor */
-    #editor { display:none; max-width:900px; margin:0 auto; padding:80px 24px 60px; }
-    .back-link { color:var(--accent); cursor:pointer; font-size:0.9rem; margin-bottom:24px; display:inline-block; }
-    #editor h2 { font-family:'Playfair Display',serif; margin-bottom:24px; }
-    .field { margin-bottom:20px; }
-    .field label { display:block; font-size:0.85rem; color:var(--dim); margin-bottom:6px; }
-    .field input, .field textarea, .field select {
-      width:100%; padding:10px 14px; background:var(--bg); border:1px solid var(--border);
-      border-radius:8px; color:var(--text); font-size:0.9rem; font-family:inherit;
-    }
-    .field textarea { min-height:300px; resize:vertical; font-family:'JetBrains Mono',monospace; font-size:0.85rem; line-height:1.6; }
-    .field input:focus, .field textarea:focus, .field select:focus { outline:none; border-color:var(--accent); }
-    .btn-row { display:flex; gap:12px; margin-top:28px; }
-    .btn-primary { padding:10px 28px; background:var(--accent); color:var(--bg); border:none; border-radius:8px; cursor:pointer; font-size:0.9rem; font-weight:500; }
-    .btn-secondary { padding:10px 28px; background:transparent; color:var(--dim); border:1px solid var(--border); border-radius:8px; cursor:pointer; font-size:0.9rem; }
-    .toast { position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:#2a3; color:#fff; padding:12px 24px; border-radius:8px; font-size:0.9rem; z-index:999; display:none; }
-  </style>
+  /* App */
+  #app { display:none; max-width:900px; margin:0 auto; padding:80px 24px 60px; }
+  .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:40px; }
+  .topbar h2 { font-family:'Playfair Display',serif; font-size:1.8rem; }
+  .btn { padding:8px 20px; border:none; border-radius:8px; cursor:pointer; font-size:0.85rem; }
+  .btn-primary { background:var(--accent); color:var(--bg); }
+  .btn-ghost { background:transparent; border:1px solid var(--border); color:var(--dim); }
+  .tabbar { display:flex; gap:4px; margin-bottom:32px; }
+  .tab { padding:8px 20px; background:var(--surface); border:1px solid var(--border); border-radius:8px 8px 0 0; cursor:pointer; color:var(--dim); font-size:0.9rem; }
+  .tab.active { background:var(--accent); color:var(--bg); border-color:var(--accent); }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; }
+  .card .info h3 { font-size:1rem; margin-bottom:4px; }
+  .card .info .meta { color:var(--dim); font-size:0.8rem; }
+  .card .actions { display:flex; gap:8px; }
+  .card .actions button { padding:6px 14px; border:1px solid var(--border); border-radius:6px; background:transparent; color:var(--dim); cursor:pointer; font-size:0.8rem; }
+  .card .actions button:hover { border-color:var(--accent); color:var(--accent); }
+  .card .actions .danger:hover { border-color:#c44; color:#c44; }
+  .empty { color:var(--dim); padding:40px 0; }
+
+  /* Editor */
+  #editor { display:none; max-width:900px; margin:0 auto; padding:80px 24px 60px; }
+  .back-link { color:var(--accent); cursor:pointer; font-size:0.9rem; margin-bottom:24px; display:inline-block; }
+  #editor h2 { font-family:'Playfair Display',serif; margin-bottom:24px; }
+  .field { margin-bottom:20px; }
+  .field label { display:block; font-size:0.85rem; color:var(--dim); margin-bottom:6px; }
+  .field label .req { color:var(--accent); }
+  .field input, .field textarea, .field select {
+    width:100%; padding:10px 14px; background:var(--bg); border:1px solid var(--border);
+    border-radius:8px; color:var(--text); font-size:0.9rem; font-family:inherit;
+  }
+  .field textarea { min-height:200px; resize:vertical; line-height:1.6; }
+  .field textarea.large { min-height:300px; }
+  .field input:focus, .field textarea:focus, .field select:focus { outline:none; border-color:var(--accent); }
+  .btn-row { display:flex; gap:12px; margin-top:28px; }
+  .toast { position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background:#2a3; color:#fff; padding:12px 24px; border-radius:8px; font-size:0.9rem; z-index:999; display:none; }
+</style>
 </head>
 <body>
 
-<!-- ====== Auth Screen ====== -->
-<div id="auth">
-  <div class="auth-card">
+<!-- ====== Auth ====== -->
+<div id="auth-box">
+  <div>
     <h1>周游·记</h1>
     <p>管理员后台</p>
     <div id="auth-error"></div>
-    <label for="token-input">GitHub Personal Access Token</label>
+    <label>GitHub Personal Access Token</label>
     <input id="token-input" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
-    <button onclick="login()">进入后台</button>
+    <button class="btn btn-primary" onclick="login()">进入后台</button>
     <div class="meta">
-      <a href="https://github.com/settings/tokens/new?scopes=repo&description=CMS" target="_blank">创建 token</a>，勾选 <strong>repo</strong> 权限<br>
-      Token 只保存在浏览器 localStorage 中
+      <a href="https://github.com/settings/tokens/new?scopes=repo&description=CMS" target="_blank">创建 token</a>，勾选 <strong>repo</strong> 权限
     </div>
   </div>
 </div>
 
-<!-- ====== List Screen ====== -->
+<!-- ====== List ====== -->
 <div id="app">
-  <div class="topbar">
-    <h2>内容管理</h2>
-    <button onclick="logout()">退出</button>
-  </div>
+  <div class="topbar"><h2>内容管理</h2><button class="btn btn-ghost" onclick="logout()">退出</button></div>
   <div class="tabbar">
     <div class="tab active" onclick="switchTab('blog')">文章</div>
     <div class="tab" onclick="switchTab('portfolio')">作品</div>
   </div>
   <div id="list"></div>
-  <button class="btn-primary" style="margin-top:16px" onclick="newEntry()">+ 新增</button>
+  <button class="btn btn-primary" style="margin-top:16px" onclick="newEntry()">+ 新增</button>
 </div>
 
-<!-- ====== Editor Screen ====== -->
+<!-- ====== Editor ====== -->
 <div id="editor">
   <a class="back-link" onclick="backToList()">← 返回列表</a>
   <h2 id="editor-title"></h2>
   <div id="editor-fields"></div>
   <div class="btn-row">
-    <button class="btn-primary" onclick="save()">保存</button>
-    <button class="btn-secondary" onclick="backToList()">取消</button>
-    <button class="btn-secondary danger" id="delete-btn" style="display:none" onclick="del()">删除</button>
+    <button class="btn btn-primary" onclick="save()">保存</button>
+    <button class="btn btn-ghost" onclick="backToList()">取消</button>
+    <button class="btn btn-ghost danger" id="delete-btn" style="display:none" onclick="del()">删除</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  const TOKEN_KEY = 'cms_token';
+  const TK = 'cms_token';
   const REPO = 'wuguangzhou/wuguangzhou.github.io';
   const API = 'https://api.github.com';
-
-  let token = localStorage.getItem(TOKEN_KEY);
-  let currentTab = 'blog';
-  let editingFile = null; // { path, sha }
+  let token = localStorage.getItem(TK);
+  let tab = 'blog';
   let entries = [];
+  let editing = null; // { path, sha, isNew }
 
   function api(path, opts = {}) {
-    const url = `${API}/repos/${REPO}/contents/${path}`;
-    return fetch(url, {
+    return fetch(API + '/repos/' + REPO + '/contents/' + path, {
       ...opts,
-      headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json', ...opts.headers }
-    }).then(r => {
-      if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
-      return r.json();
-    });
+      headers: { Authorization:'token '+token, 'Content-Type':'application/json', ...opts.headers }
+    }).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); });
   }
 
   // === Auth ===
-  function login() {
+  async function login() {
     const t = document.getElementById('token-input').value.trim();
     if (!t) return;
-    // 验证 token
-    fetch(API + '/user', { headers: { Authorization: 'token ' + t } })
-      .then(r => { if (!r.ok) throw new Error('Token 无效'); return r.json(); })
-      .then(() => {
-        token = t;
-        localStorage.setItem(TOKEN_KEY, token);
-        document.getElementById('auth').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-        loadList();
-      })
-      .catch(e => {
-        const err = document.getElementById('auth-error');
-        err.textContent = 'Token 无效，请检查是否正确（需要勾选 repo 权限）';
-        err.style.display = 'block';
-      });
+    try {
+      const r = await fetch(API + '/user', { headers: { Authorization:'token '+t } });
+      if (!r.ok) throw new Error('invalid');
+      token = t; localStorage.setItem(TK, token);
+      document.getElementById('auth-box').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      loadList();
+    } catch(e) {
+      const el = document.getElementById('auth-error');
+      el.textContent = 'Token 无效，请检查（需要勾选 repo 权限）';
+      el.style.display = 'block';
+    }
   }
-
-  function logout() {
-    localStorage.removeItem(TOKEN_KEY);
-    location.reload();
-  }
+  function logout() { localStorage.removeItem(TK); location.reload(); }
 
   // === List ===
-  function switchTab(tab) {
-    currentTab = tab;
-    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i === (tab === 'blog' ? 0 : 1)));
-    loadList();
-  }
-
-  function loadList() {
-    const dir = currentTab === 'blog' ? 'src/content/blog' : 'src/content/portfolio';
-    api(dir).then(files => {
-      entries = Array.isArray(files) ? files.filter(f => f.name.endsWith('.md')) : [];
+  function switchTab(t) { tab = t; document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',(t==='blog'?0:1)===i)); loadList(); }
+  
+  async function loadList() {
+    const dir = tab === 'blog' ? 'src/content/blog' : 'src/content/portfolio';
+    try {
+      entries = (await api(dir)).filter(f => f.name.endsWith('.md'));
       renderList();
-    }).catch(e => {
-      if (e.message.includes('404')) { entries = []; renderList(); return; }
-      toast('加载失败: ' + e.message);
-    });
+    } catch(e) {
+      if (e.message === '404') { entries = []; renderList(); }
+      else toast('加载失败');
+    }
   }
 
   function renderList() {
     const el = document.getElementById('list');
-    if (entries.length === 0) {
-      el.innerHTML = '<p style="color:var(--dim);padding:40px 0">暂无内容，点击下方按钮新增</p>';
-      return;
-    }
-    el.innerHTML = entries.map(f => {
-      const name = f.name.replace('.md', '');
-      const meta = currentTab === 'blog' ? name : '';
-      return `<div class="card">
-        <h3>${name}</h3>
-        <div class="meta">${meta}</div>
+    if (!entries.length) { el.innerHTML = '<div class="empty">暂无内容，点击下方按钮新增</div>'; return; }
+    el.innerHTML = entries.map(f => `
+      <div class="card">
+        <div class="info"><h3>${f.name.replace('.md','')}</h3></div>
         <div class="actions">
           <button onclick="editEntry('${f.path}','${f.sha}')">编辑</button>
-          <button class="danger" onclick="confirmDel('${f.path}','${f.sha}','${name}')">删除</button>
+          <button class="danger" onclick="delEntry('${f.path}','${f.sha}','${f.name}')">删除</button>
         </div>
-      </div>`;
-    }).join('');
+      </div>`).join('');
   }
 
-  function newEntry() {
-    const now = new Date();
-    const slug = currentTab === 'blog'
-      ? `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}-new-post`
-      : 'new-project';
-    const dir = currentTab === 'blog' ? 'src/content/blog' : 'src/content/portfolio';
-    editingFile = { path: `${dir}/${slug}.md`, sha: null, isNew: true };
-    renderEditor();
-  }
-
-  function editEntry(path, sha) {
-    editingFile = { path, sha, isNew: false };
-    api(path).then(data => {
-      const content = atob(data.content);
-      editingFile._raw = content;
-      renderEditor(content);
-    });
-  }
-
-  function confirmDel(path, sha, name) {
-    if (confirm('确定删除「' + name + '」？此操作不可撤销。')) {
-      api(path, { method: 'DELETE', body: JSON.stringify({ message: '删除 ' + name, sha }) })
-        .then(() => { toast('已删除'); loadList(); })
-        .catch(e => toast('删除失败: ' + e.message));
-    }
+  function delEntry(path, sha, name) {
+    if (!confirm('确定删除「' + name + '」？')) return;
+    api(path, { method:'DELETE', body:JSON.stringify({ message:'删除 '+name, sha, branch:'main' }) })
+      .then(() => { toast('已删除'); loadList(); }).catch(() => toast('删除失败'));
   }
 
   // === Editor ===
-  function renderEditor(rawContent) {
-    document.getElementById('app').style.display = 'none';
-    document.getElementById('editor').style.display = 'block';
-    document.getElementById('editor-title').textContent = editingFile.isNew ? '新建' : '编辑 ' + editingFile.path;
-
-    const fields = document.getElementById('editor-fields');
-    if (!rawContent) rawContent = currentTab === 'blog'
-      ? '---\ntitle: \ndate: \ndescription: \n---\n\n'
-      : '---\ntitle: \nyear: \ncategory: \ndescription: \n---\n\n';
-
-    fields.innerHTML = `
-      <div class="field">
-        <label>内容（Markdown，含 frontmatter）</label>
-        <textarea id="editor-content">${escapeHtml(rawContent)}</textarea>
-      </div>
-    `;
-    document.getElementById('delete-btn').style.display = editingFile.isNew ? 'none' : 'inline-block';
+  function newEntry() {
+    const now = new Date();
+    const defaults = tab === 'blog' ? {
+      title: '', date: now.toISOString().slice(0,10), description: '', tags: '', body: ''
+    } : {
+      title: '', year: now.getFullYear(), category: '独立开发', techStack: '', description: '', body: ''
+    };
+    const slug = tab === 'blog'
+      ? now.toISOString().slice(0,10) + '-new-post'
+      : 'new-project';
+    editing = { path: (tab === 'blog' ? 'src/content/blog/' : 'src/content/portfolio/') + slug + '.md', sha: null, isNew: true, data: defaults };
+    renderEditor();
   }
 
-  function save() {
-    const content = document.getElementById('editor-content').value;
-    const body = {
-      message: editingFile.isNew ? '新建内容' : '更新内容',
-      content: btoa(unescape(encodeURIComponent(content))),
-      branch: 'main'
-    };
-    if (editingFile.sha) body.sha = editingFile.sha;
+  async function editEntry(path, sha) {
+    const data = await api(path);
+    const raw = atob(data.content);
+    const fm = parseFM(raw);
+    editing = { path, sha, isNew: false, data: fm };
+    renderEditor();
+  }
 
-    const method = editingFile.sha ? 'PUT' : 'PUT';
-    api(editingFile.path, { method, body: JSON.stringify(body) })
-      .then(() => { toast('保存成功！GitHub Actions 正在部署...'); backToList(); })
-      .catch(e => toast('保存失败: ' + e.message));
+  function parseFM(raw) {
+    const m = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+    if (!m) return { title:'', date:'', description:'', tags:'', body:raw };
+    const front = m[1], body = m[2];
+    const data = { body };
+    front.split('\n').forEach(line => {
+      const i = line.indexOf(':');
+      if (i > 0) {
+        const k = line.slice(0,i).trim();
+        let v = line.slice(i+1).trim();
+        if (v.startsWith('[')) v = v.slice(1,-1).split(',').map(s=>s.trim().replace(/^['"]|['"]$/g,'')).join(', ');
+        else v = v.replace(/^['"]|['"]$/g,'');
+        data[k] = v;
+      }
+    });
+    return data;
+  }
+
+  function renderEditor() {
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('editor').style.display = 'block';
+    document.getElementById('editor-title').textContent = editing.isNew ? '新建' : '编辑';
+    document.getElementById('delete-btn').style.display = editing.isNew ? 'none' : 'inline-block';
+
+    const d = editing.data;
+    const fields = document.getElementById('editor-fields');
+
+    if (tab === 'blog') {
+      fields.innerHTML = `
+        <div class="field"><label><span class="req">*</span> 标题</label><input id="f-title" value="${esc(d.title||'')}" /></div>
+        <div class="field"><label><span class="req">*</span> 日期</label><input id="f-date" type="date" value="${esc(d.date||'')}" /></div>
+        <div class="field"><label><span class="req">*</span> 摘要</label><input id="f-desc" value="${esc(d.description||'')}" /></div>
+        <div class="field"><label>标签（逗号分隔）</label><input id="f-tags" value="${esc(d.tags||'')}" placeholder="技术, 设计" /></div>
+        <div class="field"><label>正文（Markdown）</label><textarea id="f-body" class="large">${esc(d.body||'')}</textarea></div>
+      `;
+    } else {
+      fields.innerHTML = `
+        <div class="field"><label><span class="req">*</span> 项目名称</label><input id="f-title" value="${esc(d.title||'')}" /></div>
+        <div class="field"><label><span class="req">*</span> 年份</label><input id="f-year" type="number" value="${esc(d.year||'')}" /></div>
+        <div class="field"><label><span class="req">*</span> 分类</label><select id="f-category">${['开源项目','独立开发'].map(c=>`<option ${d.category===c?'selected':''}>${c}</option>`).join('')}</select></div>
+        <div class="field"><label>技术栈（逗号分隔）</label><input id="f-tech" value="${esc(d.techStack||'')}" placeholder="TypeScript, React" /></div>
+        <div class="field"><label><span class="req">*</span> 描述</label><input id="f-desc" value="${esc(d.description||'')}" /></div>
+        <div class="field"><label>正文（Markdown，可选）</label><textarea id="f-body" class="large">${esc(d.body||'')}</textarea></div>
+      `;
+    }
+  }
+
+  async function save() {
+    const data = {};
+    if (tab === 'blog') {
+      data.title = document.getElementById('f-title').value.trim();
+      data.date = document.getElementById('f-date').value;
+      data.description = document.getElementById('f-desc').value.trim();
+      data.tags = document.getElementById('f-tags').value;
+      if (!data.title || !data.date || !data.description) { toast('标题、日期、摘要为必填'); return; }
+      const tagsArr = data.tags ? data.tags.split(',').map(s=>s.trim()).filter(Boolean) : [];
+      const body = document.getElementById('f-body').value.trim();
+      const fm = `---\ntitle: ${data.title}\ndate: ${data.date}\ndescription: ${data.description}\n${tagsArr.length ? 'tags: ['+tagsArr.join(', ')+']\n' : ''}---\n\n${body}`;
+      await saveFile(fm);
+    } else {
+      data.title = document.getElementById('f-title').value.trim();
+      data.year = document.getElementById('f-year').value;
+      data.category = document.getElementById('f-category').value;
+      data.description = document.getElementById('f-desc').value.trim();
+      data.techStack = document.getElementById('f-tech').value;
+      if (!data.title || !data.year || !data.description) { toast('项目名称、年份、描述为必填'); return; }
+      const techArr = data.techStack ? data.techStack.split(',').map(s=>s.trim()).filter(Boolean) : [];
+      const body = document.getElementById('f-body').value.trim();
+      const fm = `---\ntitle: ${data.title}\nyear: ${data.year}\ncategory: ${data.category}\n${techArr.length ? 'techStack: ['+techArr.join(', ')+']\n' : ''}description: ${data.description}\n---\n\n${body}`;
+      await saveFile(fm);
+    }
+  }
+
+  async function saveFile(content) {
+    const body = { message: editing.isNew ? '新建内容' : '更新内容', content: btoa(unescape(encodeURIComponent(content))), branch: 'main' };
+    if (editing.sha) body.sha = editing.sha;
+    try {
+      await api(editing.path, { method:'PUT', body:JSON.stringify(body) });
+      toast('保存成功！等待部署中...');
+      backToList();
+    } catch(e) { toast('保存失败: ' + e.message); }
   }
 
   function del() {
     if (!confirm('确定删除？')) return;
-    api(editingFile.path, { method: 'DELETE', body: JSON.stringify({ message: '删除内容', sha: editingFile.sha, branch: 'main' }) })
-      .then(() => { toast('已删除'); backToList(); })
-      .catch(e => toast('删除失败: ' + e.message));
+    api(editing.path, { method:'DELETE', body:JSON.stringify({ message:'删除', sha:editing.sha, branch:'main' }) })
+      .then(() => { toast('已删除'); backToList(); }).catch(() => toast('删除失败'));
   }
 
   function backToList() {
     document.getElementById('editor').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    editingFile = null;
-    loadList();
+    editing = null; loadList();
   }
 
-  // === Helpers ===
-  function toast(msg) {
-    const el = document.getElementById('toast');
-    el.textContent = msg; el.style.display = 'block';
-    setTimeout(() => { el.style.display = 'none'; }, 3000);
+  function toast(m) {
+    const e = document.getElementById('toast');
+    e.textContent = m; e.style.display = 'block';
+    setTimeout(()=>{e.style.display='none';},3000);
   }
-
-  function escapeHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
   // === Init ===
   if (token) {
-    document.getElementById('auth').style.display = 'none';
+    document.getElementById('auth-box').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     loadList();
   }
-
-  document.getElementById('token-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') login();
-  });
+  document.getElementById('token-input').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
 </script>
 </body>
 </html>
