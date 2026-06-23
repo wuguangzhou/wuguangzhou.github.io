@@ -1,0 +1,11 @@
+# Force LF line endings for all text files
+* text=auto eol=lf
+
+# Treat these as binary to avoid encoding corruption
+*.html text working-tree-encoding=UTF-8
+*.astro text working-tree-encoding=UTF-8
+*.css text working-tree-encoding=UTF-8
+*.ts text working-tree-encoding=UTF-8
+*.js text working-tree-encoding=UTF-8
+*.yml text working-tree-encoding=UTF-8
+*.md text working-tree-encoding=UTF-8
