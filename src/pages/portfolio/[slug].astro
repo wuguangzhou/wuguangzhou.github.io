@@ -1,103 +1,66 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BackgroundLayer from '../../components/global/BackgroundLayer.astro';
+import { getCollection } from 'astro:content';
 
-export function getStaticPaths() {
-  return [
-    { params: { slug: 'flow-editor' } },
-    { params: { slug: 'minimal-log' } },
-    { params: { slug: 'ink-notes' } },
-  ];
+export async function getStaticPaths() {
+  const projects = await getCollection('portfolio');
+  return projects.map(p => ({ params: { slug: p.id } }));
 }
 
 const { slug } = Astro.params;
-const projects = {
-  'flow-editor': { title: 'Flow Editor', year: '2024', role: '开源项目', desc: '轻量级流程图编辑器...' },
-  'minimal-log':  { title: 'Minimal Log',  year: '2023', role: '独立开发', desc: '极简日志聚合工具...' },
-  'ink-notes':    { title: 'Ink Notes',    year: '2023', role: '独立开发', desc: '极简私人笔记应用...' },
-};
-const project = projects[slug as keyof typeof projects] || projects['flow-editor'];
+const projects = await getCollection('portfolio');
+const project = projects.find(p => p.id === slug);
+if (!project) throw new Error('Project not found: ' + slug);
+
+const bodyHtml = project.body
+  ? project.body.replace(/^---[\s\S]*?---\n*/, '').split('\n\n').map((p: string) => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`).join('')
+  : '';
+
+const sorted = projects.sort((a, b) => b.data.year - a.data.year);
+const idx = sorted.findIndex(p => p.id === slug);
+const prev = idx < sorted.length - 1 ? sorted[idx + 1] : null;
+const next = idx > 0 ? sorted[idx - 1] : null;
 ---
 
 <BaseLayout>
   <BackgroundLayer slot="bg-layer" section="works" />
-
   <article class="page-section">
     <div class="container">
       <a href="/portfolio" class="back-link reveal">&larr; 返回作品集</a>
-      <h1 class="detail-title reveal">{project.title}</h1>
+      <h1 class="detail-title reveal">{project.data.title}</h1>
       <div class="detail-meta reveal">
-        <span>{project.year}</span>
+        <span>{project.data.year}</span>
         <span>&middot;</span>
-        <span>{project.role}</span>
-        <span>&middot;</span>
-        <span>前端开发</span>
+        <span>{project.data.category}</span>
+        {project.data.role && <><span>&middot;</span><span>{project.data.role}</span></>}
       </div>
       <div class="detail-tags reveal">
-        <span class="badge">TypeScript</span>
-        <span class="badge">React</span>
-        <span class="badge">Canvas API</span>
+        {project.data.techStack.map(tech => <span class="badge">{tech}</span>)}
       </div>
-      <div class="detail-body reveal">
-        <p>{project.desc}</p>
-      </div>
+      <div class="prose reveal" set:html={bodyHtml} />
       <nav class="detail-nav reveal">
-        <a href="/portfolio/minimal-log" class="text-link">&larr; Minimal Log</a>
-        <a href="/portfolio/ink-notes" class="text-link">Ink Notes &rarr;</a>
+        {prev ? <a href={`/portfolio/${prev.id}`} class="text-link">&larr; {prev.data.title}</a> : <span />}
+        {next ? <a href={`/portfolio/${next.id}`} class="text-link">{next.data.title} &rarr;</a> : <span />}
       </nav>
     </div>
   </article>
 </BaseLayout>
 
 <style>
-  .page-section {
-    padding: 160px 0 var(--space-2xl);
+  .page-section { padding: 160px 0 var(--space-2xl); position: relative; z-index: 1; }
+  .back-link { font-size: 0.875rem; color: var(--color-text-dim); text-decoration: none; display: inline-block; margin-bottom: var(--space-lg); transition: color 0.3s ease; }
+  .back-link:hover { color: var(--color-accent); }
+  .detail-title { font-family: var(--font-heading); font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 600; letter-spacing: -0.02em; color: var(--color-text); margin-bottom: var(--space-sm); }
+  .detail-meta { font-size: 0.875rem; font-family: var(--font-mono); color: var(--color-text-faint); margin-bottom: var(--space-md); display: flex; gap: 0.4em; flex-wrap: wrap; }
+  .detail-tags { display: flex; gap: 10px; margin-bottom: var(--space-lg); flex-wrap: wrap; }
+  .badge {
+    display: inline-block; padding: 3px 10px; font-family: var(--font-mono);
+    font-size: 0.6875rem; color: var(--color-accent-dim); border: 1px solid var(--color-border);
+    border-radius: 9999px; transition: all 0.3s ease;
   }
-  .back-link {
-    font-size: 0.875rem;
-    color: var(--color-text-dim);
-    text-decoration: none;
-    display: inline-block;
-    margin-bottom: var(--space-lg);
-    transition: color 0.3s ease;
-  }
-  .back-link:hover {
-    color: var(--color-accent);
-  }
-  .detail-title {
-    font-family: var(--font-heading);
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--color-text);
-    margin-bottom: var(--space-sm);
-  }
-  .detail-meta {
-    font-size: 0.875rem;
-    font-family: var(--font-mono);
-    color: var(--color-text-faint);
-    margin-bottom: var(--space-md);
-  }
-  .detail-tags {
-    display: flex;
-    gap: 10px;
-    margin-bottom: var(--space-lg);
-    flex-wrap: wrap;
-  }
-  .detail-body {
-    font-size: 1rem;
-    line-height: 1.75;
-    color: var(--color-text-dim);
-    max-width: 680px;
-    margin-bottom: var(--space-xl);
-  }
-  .detail-body p + p {
-    margin-top: var(--space-sm);
-  }
-  .detail-nav {
-    display: flex;
-    justify-content: space-between;
-    padding-top: var(--space-lg);
-    border-top: 1px solid var(--color-border);
-  }
+  .prose { font-size: 1rem; line-height: 1.8; color: var(--color-text-dim); max-width: 680px; margin-bottom: var(--space-xl); }
+  .prose :global(p) { margin-bottom: 1.2em; }
+  .detail-nav { display: flex; justify-content: space-between; padding-top: var(--space-lg); border-top: 1px solid var(--color-border); }
+  @media (max-width: 768px) { .detail-nav { flex-direction: column; gap: var(--space-sm); } }
 </style>

@@ -2,36 +2,28 @@
 import BlurText from '../effects/BlurText.astro';
 import TrueFocus from '../effects/TrueFocus.astro';
 import TiltedCard from '../effects/TiltedCard.astro';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('portfolio');
+const latest = projects.sort((a, b) => b.data.year - a.data.year).slice(0, 2);
 ---
 
 <section class="works-section">
   <div class="container">
     <BlurText as="h2" class="section-title">精选作品</BlurText>
     <TrueFocus class="works-grid" blurAmount="2.5px">
-      <a href="/portfolio/flow-editor" class="card work-card">
-        <TiltedCard maxTilt="6">
-          <p class="work-meta">2024 &middot; 开源项目</p>
-          <h3 class="work-title">Flow Editor</h3>
-          <p class="work-desc">一个轻量级的流程图编辑器，支持实时协作。</p>
-          <div class="work-tags">
-            <span class="badge">TypeScript</span>
-            <span class="badge">React</span>
-            <span class="badge">Canvas</span>
-          </div>
-        </TiltedCard>
-      </a>
-      <a href="/portfolio/minimal-log" class="card work-card">
-        <TiltedCard maxTilt="6">
-          <p class="work-meta">2023 &middot; 独立开发</p>
-          <h3 class="work-title">Minimal Log</h3>
-          <p class="work-desc">极简风格的日志聚合与可视化工具。</p>
-          <div class="work-tags">
-            <span class="badge">Go</span>
-            <span class="badge">HTMX</span>
-            <span class="badge">SQLite</span>
-          </div>
-        </TiltedCard>
-      </a>
+      {latest.map(project => (
+        <a href={`/portfolio/${project.id}`} class="card work-card">
+          <TiltedCard maxTilt="6">
+            <p class="work-meta">{project.data.year} &middot; {project.data.category}</p>
+            <h3 class="work-title">{project.data.title}</h3>
+            <p class="work-desc">{project.data.description}</p>
+            <div class="work-tags">
+              {project.data.techStack.map(tech => <span class="badge">{tech}</span>)}
+            </div>
+          </TiltedCard>
+        </a>
+      ))}
     </TrueFocus>
     <p class="section-more reveal">
       <a href="/portfolio" class="text-link">查看全部作品 &rarr;</a>
@@ -40,64 +32,17 @@ import TiltedCard from '../effects/TiltedCard.astro';
 </section>
 
 <style>
-  .works-section {
-    padding: var(--space-2xl) 0;
-    position: relative;
-    z-index: 1;
+  .works-section { padding: var(--space-2xl) 0; position: relative; z-index: 1; }
+  .works-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .work-card { text-decoration: none; color: inherit; display: block; border-radius: 16px; position: relative; z-index: 1; }
+  .work-meta { font-size: 0.75rem; font-family: var(--font-mono); color: var(--color-text-faint); margin-bottom: var(--space-sm); letter-spacing: 0.03em; }
+  .work-title { font-family: var(--font-heading); font-size: 1.35rem; font-weight: 500; color: var(--color-text); margin-bottom: 10px; letter-spacing: -0.01em; }
+  .work-desc { font-size: 0.875rem; color: var(--color-text-dim); line-height: 1.6; }
+  .work-tags { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .section-more { margin-top: var(--space-lg); }
+  .badge {
+    display: inline-block; padding: 3px 10px; font-family: var(--font-mono); font-size: 0.6875rem;
+    color: var(--color-accent-dim); border: 1px solid var(--color-border); border-radius: 9999px; transition: all 0.3s ease;
   }
-
-  .works-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px;
-  }
-
-  .work-card {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    border-radius: 16px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .work-meta {
-    font-size: 0.75rem;
-    font-family: var(--font-mono);
-    color: var(--color-text-faint);
-    margin-bottom: var(--space-sm);
-    letter-spacing: 0.03em;
-  }
-
-  .work-title {
-    font-family: var(--font-heading);
-    font-size: 1.35rem;
-    font-weight: 500;
-    color: var(--color-text);
-    margin-bottom: 10px;
-    letter-spacing: -0.01em;
-  }
-
-  .work-desc {
-    font-size: 0.875rem;
-    color: var(--color-text-dim);
-    line-height: 1.6;
-  }
-
-  .work-tags {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-  }
-
-  .section-more {
-    margin-top: var(--space-lg);
-  }
-
-  @media (max-width: 768px) {
-    .works-grid {
-      grid-template-columns: 1fr;
-    }
-  }
+  @media (max-width: 768px) { .works-grid { grid-template-columns: 1fr; } }
 </style>
