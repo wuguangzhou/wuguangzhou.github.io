@@ -1,5 +1,4 @@
 # Netlify CMS 配置文件 · 周游·记
-# 文档：https://www.netlifycms.org/docs/configuration-options/
 
 backend:
   name: github
@@ -7,27 +6,19 @@ backend:
   branch: main
   client_id: Ov23liM05MbKmS9dimqS
 
-# 内容文件存储路径
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
 
-# 站点信息
 site_url: https://wuguangzhou.github.io
 display_url: https://wuguangzhou.github.io
-logo_url: https://wuguangzhou.github.io/favicon.svg
-locale: zh_Hans
 
-# ===== 内容集合 =====
 collections:
-  # --- 文章 ---
   - name: "blog"
     label: "文章"
     label_singular: "文章"
     folder: "src/content/blog"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    editor:
-      preview: false
     fields:
       - { label: "标题", name: "title", widget: "string" }
       - { label: "发布日期", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
@@ -35,33 +26,24 @@ collections:
       - { label: "标签", name: "tags", widget: "list", default: [], required: false }
       - { label: "正文", name: "body", widget: "markdown" }
 
-  # --- 作品 ---
   - name: "portfolio"
     label: "作品"
     label_singular: "作品"
     folder: "src/content/portfolio"
     create: true
     slug: "{{slug}}"
-    editor:
-      preview: false
     fields:
       - { label: "项目名称", name: "title", widget: "string" }
-      - { label: "年份", name: "year", widget: "number", value_type: "int" }
+      - { label: "年份", name: "year", widget: "number" }
       - { label: "分类", name: "category", widget: "select", options: ["开源项目", "独立开发"] }
       - { label: "角色", name: "role", widget: "string", required: false }
       - { label: "技术栈", name: "techStack", widget: "list", default: [] }
       - { label: "项目链接", name: "url", widget: "string", required: false }
       - { label: "描述", name: "description", widget: "text" }
-      - { label: "正文（可选）", name: "body", widget: "markdown", required: false }
+      - { label: "正文", name: "body", widget: "markdown", required: false }
 
-  # --- 关于页 ---
   - name: "about"
     label: "关于页"
-    label_singular: "关于页"
-    folder: "src/content/about"
-    create: false
-    editor:
-      preview: false
     files:
       - name: "about"
         label: "个人信息"
