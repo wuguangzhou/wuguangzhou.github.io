@@ -1,0 +1,99 @@
+---
+import BlurText from '../effects/BlurText.astro';
+import TrueFocus from '../effects/TrueFocus.astro';
+---
+
+<section class="posts-section">
+  <div class="container">
+    <BlurText as="h2" class="section-title">最近文章</BlurText>
+    <TrueFocus class="posts-list" blurAmount="2px">
+      <a href="/blog/perf" class="post-item">
+        <span class="post-date">2025.01</span>
+        <div>
+          <div class="post-title">静态网站的性能优化实践</div>
+          <div class="post-desc">从 Lighthouse 60 到 98 的优化记录。</div>
+        </div>
+      </a>
+      <a href="/blog/tech-stack" class="post-item">
+        <span class="post-date">2024.11</span>
+        <div>
+          <div class="post-title">一人公司的技术栈选择</div>
+          <div class="post-desc">关于独立开发者的工具链思考。</div>
+        </div>
+      </a>
+      <a href="/blog/simplicity" class="post-item">
+        <span class="post-date">2024.09</span>
+        <div>
+          <div class="post-title">重新理解简洁</div>
+          <div class="post-desc">简洁不是少，而是不多余。</div>
+        </div>
+      </a>
+    </TrueFocus>
+    <p class="section-more reveal">
+      <a href="/blog" class="text-link">阅读更多 &rarr;</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .posts-section {
+    padding: var(--space-2xl) 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: var(--space-md);
+    padding: 28px 0;
+    border-bottom: 1px solid var(--color-border);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    align-items: baseline;
+  }
+  .post-item:first-child {
+    border-top: 1px solid var(--color-border);
+  }
+  .post-item:hover {
+    padding-left: 12px;
+  }
+
+  .post-date {
+    font-size: 0.8125rem;
+    font-family: var(--font-mono);
+    color: var(--color-text-faint);
+  }
+
+  .post-title {
+    font-size: 1.1rem;
+    font-weight: 450;
+    color: var(--color-text);
+    transition: color 0.3s ease;
+  }
+  .post-item:hover .post-title {
+    color: var(--color-accent);
+  }
+
+  .post-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-dim);
+    margin-top: 4px;
+  }
+
+  .section-more {
+    margin-top: var(--space-lg);
+  }
+
+  @media (max-width: 768px) {
+    .post-item {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+  }
+</style>

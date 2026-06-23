@@ -1,0 +1,36 @@
+---
+// Aurora — Hero 区极光般流动色彩背景
+---
+
+<div class="aurora-layer" aria-hidden="true"></div>
+
+<style>
+  .aurora-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.25;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 60%, rgba(var(--color-accent-rgb), 0.15), transparent 70%),
+      radial-gradient(ellipse 50% 60% at 80% 30%, rgba(var(--color-accent-rgb), 0.1), transparent 70%),
+      radial-gradient(ellipse 40% 40% at 50% 80%, rgba(var(--color-accent-dim-rgb), 0.08), transparent 70%);
+    animation: auroraDrift 20s ease-in-out infinite alternate;
+    filter: blur(80px);
+  }
+
+  @keyframes auroraDrift {
+    0% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(3%, -2%) scale(1.15);
+    }
+    66% {
+      transform: translate(-2%, 1%) scale(0.95);
+    }
+    100% {
+      transform: translate(1%, -1%) scale(1.05);
+    }
+  }
+</style>

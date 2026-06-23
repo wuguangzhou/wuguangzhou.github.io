@@ -1,0 +1,43 @@
+---
+// Magnet — 子元素受鼠标轻微吸引
+export interface Props {
+  strength?: number;
+  class?: string;
+}
+const { strength = 0.3, class: className = '' } = Astro.props;
+---
+
+<span class={`magnet-wrap ${className}`} style={`--mg-strength: ${strength}`}>
+  <slot />
+</span>
+
+<style>
+  .magnet-wrap {
+    display: inline-block;
+  }
+  .magnet-wrap > :first-child {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+</style>
+
+<script>
+  const wrap = document.currentScript?.previousElementSibling as HTMLElement;
+  if (wrap) {
+    const child = wrap.firstElementChild as HTMLElement;
+    if (child) {
+      const strength = parseFloat(wrap.style.getPropertyValue('--mg-strength')) || 0.3;
+
+      wrap.addEventListener('mousemove', (e) => {
+        const rect = wrap.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        child.style.transform = `translate(${x * strength * 16}px, ${y * strength * 16}px)`;
+      });
+
+      wrap.addEventListener('mouseleave', () => {
+        child.style.transform = 'translate(0, 0)';
+      });
+    }
+  }
+</script>

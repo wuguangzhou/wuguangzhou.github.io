@@ -1,0 +1,51 @@
+---
+import { SITE } from '../../lib/constants';
+---
+
+<section class="cta-section">
+  <div class="container cta-inner reveal">
+    <p class="cta-text">有想做的事，不妨聊一聊。</p>
+    <a href={`mailto:${SITE.email}`} class="cta-link">{SITE.email}</a>
+  </div>
+</section>
+
+<style>
+  .cta-section {
+    padding: 100px 0 140px;
+    text-align: center;
+  }
+  .cta-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .cta-text {
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 2.8vw, 1.9rem);
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+  .cta-link {
+    font-size: 1rem;
+    color: var(--color-accent);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  .cta-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--color-accent);
+    transform: scaleX(0.3);
+    transition: transform 0.3s ease;
+    transform-origin: left;
+  }
+  .cta-link:hover::after {
+    transform: scaleX(1);
+  }
+</style>

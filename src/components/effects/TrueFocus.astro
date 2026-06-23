@@ -1,0 +1,31 @@
+---
+// TrueFocus — hover 一个子元素时，其余子元素轻微模糊
+export interface Props {
+  blurAmount?: string;
+  class?: string;
+}
+const { blurAmount = '3px', class: className = '' } = Astro.props;
+---
+
+<div class={`true-focus ${className}`} style={`--tf-blur: ${blurAmount}`}>
+  <slot />
+</div>
+
+<style>
+  .true-focus {
+    /* Container has no special styling, just passes children through */
+  }
+  .true-focus > * {
+    transition: filter 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .true-focus:hover > * {
+    filter: blur(var(--tf-blur, 3px));
+    opacity: 0.55;
+  }
+  .true-focus:hover > *:hover {
+    filter: blur(0);
+    opacity: 1;
+    transform: scale(1.02);
+  }
+</style>

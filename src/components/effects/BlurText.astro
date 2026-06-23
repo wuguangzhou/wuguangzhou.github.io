@@ -1,0 +1,28 @@
+---
+// BlurText — 文字从模糊到清晰入场，替代简单 fadeInUp
+export interface Props {
+  as?: string;
+  class?: string;
+}
+const { as = 'h2', class: className = '' } = Astro.props;
+const Tag = as;
+---
+
+<Tag class={`blur-text ${className}`}><slot /></Tag>
+
+<style>
+  .blur-text {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(12px);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, filter, transform;
+  }
+  .blur-text.visible {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+</style>

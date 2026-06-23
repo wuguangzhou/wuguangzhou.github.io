@@ -1,0 +1,253 @@
+@import 'tailwindcss';
+
+/* ===== Tailwind Typography Plugin ===== */
+/* (Custom prose overrides will go in typography.css) */
+
+/* ===== DESIGN.md §2: Color Palette ===== */
+:root {
+  /* Default: Ink Blue */
+  --color-bg:              #0A0D14;
+  --color-bg-rgb:          10, 13, 20;
+  --color-surface:         #131722;
+  --color-surface-rgb:     19, 23, 34;
+  --color-hover:           #181D28;
+  --color-hover-rgb:       24, 29, 40;
+  --color-text:            #E3E6EC;
+  --color-text-rgb:        227, 230, 236;
+  --color-text-dim:        #8890A0;
+  --color-text-dim-rgb:    136, 144, 160;
+  --color-text-faint:      #505660;
+  --color-text-faint-rgb:  80, 86, 96;
+  --color-accent:          #7B8CA8;
+  --color-accent-rgb:      123, 140, 168;
+  --color-accent-dim:      #556070;
+  --color-accent-dim-rgb:  85, 96, 112;
+  --color-border:          #1E2330;
+  --color-border-rgb:      30, 35, 48;
+  --color-overlay:         rgba(10, 13, 20, 0.72);
+
+  /* ===== DESIGN.md §3: Typography ===== */
+  --font-heading:  'Playfair Display', 'Noto Serif SC', 'STSong', 'Songti SC', 'SimSun', serif;
+  --font-body:     'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+  --font-mono:     'JetBrains Mono', 'SF Mono', 'Consolas', 'Courier New', monospace;
+
+  /* ===== DESIGN.md §5: Spacing ===== */
+  --space-xs:  8px;
+  --space-sm:  16px;
+  --space-md:  24px;
+  --space-lg:  48px;
+  --space-xl:  80px;
+  --space-2xl: 120px;
+}
+
+/* ===== Theme: Crow (鸦青) ===== */
+[data-theme='crow'] {
+  --color-bg:              #0B0F0E;
+  --color-bg-rgb:          11, 15, 14;
+  --color-surface:         #161B19;
+  --color-surface-rgb:     22, 27, 25;
+  --color-hover:           #1C221F;
+  --color-hover-rgb:       28, 34, 31;
+  --color-text:            #E3E8E5;
+  --color-text-rgb:        227, 232, 229;
+  --color-text-dim:        #88908C;
+  --color-text-dim-rgb:    136, 144, 140;
+  --color-text-faint:      #535B57;
+  --color-text-faint-rgb:  83, 91, 87;
+  --color-accent:          #8A9E8D;
+  --color-accent-rgb:      138, 158, 141;
+  --color-accent-dim:      #5D6E60;
+  --color-accent-dim-rgb:  93, 110, 96;
+  --color-border:          #1F2623;
+  --color-border-rgb:      31, 38, 35;
+  --color-overlay:         rgba(11, 15, 14, 0.70);
+}
+
+/* ===== Global Reset ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-bg);
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: color 0.6s ease-in-out;
+}
+
+/* ===== Container ===== */
+.main-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Section Titles (global — used by BlurText component) ===== */
+.section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  margin-bottom: var(--space-lg);
+}
+
+.page-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  margin-bottom: var(--space-sm);
+}
+
+.page-desc {
+  font-size: 1.05rem;
+  color: var(--color-text-dim);
+  margin-bottom: var(--space-lg);
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 24px;
+  }
+}
+
+/* ===== DESIGN.md §4.6: Background Layer ===== */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  /* background-image 由 JS 直接设置 */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  transition: background-image 0.6s ease-in-out;
+}
+
+.bg-layer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (max-width: 768px) {
+  .bg-layer {
+    background-attachment: scroll;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+      linear-gradient(180deg, var(--color-bg) 0%, var(--color-surface) 100%);
+  }
+}
+
+/* ===== Scroll Progress Bar ===== */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 1px;
+  background: var(--color-accent);
+  z-index: 1000;
+  transform-origin: left;
+  transition: background 0.6s ease-in-out;
+}
+
+/* ===== Custom Cursor ===== */
+@media (hover: hover) {
+  .custom-cursor {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s ease, height 0.2s ease, background 0.6s ease-in-out;
+  }
+  .custom-cursor.hovering {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* ===== Scroll Reveal ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-from-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal-from-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal-from-left.visible,
+.reveal-from-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ===== DESIGN.md §8: prefers-reduced-motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .bg-layer {
+    background-attachment: scroll;
+  }
+}
+
+/* ===== Hero stagger keyframes ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-char {
+  display: inline-block;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(6px); }
+}

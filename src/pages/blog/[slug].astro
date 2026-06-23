@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BackgroundLayer from '../../components/global/BackgroundLayer.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'simplicity' } },
+    { params: { slug: 'tech-stack' } },
+    { params: { slug: 'perf' } },
+  ];
+}
+
+const { slug } = Astro.params;
+const posts: Record<string, { title: string; date: string; readingTime: string; body: string[] }> = {
+  'simplicity': {
+    title: '重新理解简洁',
+    date: '2024.09',
+    readingTime: '约 5 分钟阅读',
+    body: [
+      '简洁不是「少」，而是「不多余」。',
+      '我们常常把简洁误解为删减——删掉文字、删掉功能、删掉装饰。但真正的简洁，是每一个存在的东西都有它存在的理由。',
+      '好的简洁就像好的排版：你不会注意到它，因为它没有阻碍你的阅读。坏的简洁就像空的房间：你感到的不是平静，而是匮乏。',
+      '在做产品时，我常常问自己：这个功能如果去掉，用户会想念它吗？如果答案是否定的，那它从来就不该存在。',
+    ],
+  },
+  'tech-stack': {
+    title: '一人公司的技术栈选择',
+    date: '2024.11',
+    readingTime: '约 8 分钟阅读',
+    body: [
+      '一个人的精力和时间是有限的。技术栈的选择，本质上是在选择「我愿意把时间花在哪里」。',
+      '我倾向于选择成熟但不过时的技术——它们有足够的社区支撑，又不会让你陷入无止境的版本升级。',
+    ],
+  },
+  'perf': {
+    title: '静态网站的性能优化实践',
+    date: '2025.01',
+    readingTime: '约 6 分钟阅读',
+    body: [
+      '从 Lighthouse 60 到 98，我做了什么。',
+      '核心思路只有三个：减少请求、减小体积、优化渲染路径。剩下的都是细节。',
+    ],
+  },
+};
+const post = posts[slug as keyof typeof posts] || posts['simplicity'];
+const prevMap: Record<string, string | null> = { 'simplicity': 'tech-stack', 'tech-stack': 'perf', 'perf': null };
+const nextMap: Record<string, string | null> = { 'simplicity': null, 'tech-stack': 'simplicity', 'perf': 'tech-stack' };
+const prev = prevMap[slug as keyof typeof prevMap];
+const next = nextMap[slug as keyof typeof nextMap];
+---
+
+<BaseLayout>
+  <BackgroundLayer slot="bg-layer" section="blog" />
+
+  <article class="page-section">
+    <div class="container">
+      <a href="/blog" class="back-link reveal">&larr; 返回博客</a>
+      <h1 class="detail-title reveal">{post.title}</h1>
+      <div class="detail-meta reveal">
+        <time>{post.date}</time>
+        <span>&middot;</span>
+        <span>{post.readingTime}</span>
+      </div>
+      <div class="prose reveal">
+        {post.body.map(p => <p>{p}</p>)}
+      </div>
+      <nav class="detail-nav reveal">
+        {prev ? <a href={`/blog/${prev}`} class="text-link">&larr; 上一篇</a> : <span />}
+        {next ? <a href={`/blog/${next}`} class="text-link">下一篇 &rarr;</a> : <span />}
+      </nav>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page-section {
+    padding: 160px 0 var(--space-2xl);
+  }
+  .back-link {
+    font-size: 0.875rem;
+    color: var(--color-text-dim);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: var(--space-lg);
+    transition: color 0.3s ease;
+  }
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+  .detail-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-bottom: var(--space-sm);
+  }
+  .detail-meta {
+    font-size: 0.875rem;
+    font-family: var(--font-mono);
+    color: var(--color-text-faint);
+    margin-bottom: var(--space-xl);
+  }
+  .prose {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-text-dim);
+    max-width: 680px;
+    margin-bottom: var(--space-xl);
+  }
+  .prose p + p {
+    margin-top: var(--space-sm);
+  }
+  .detail-nav {
+    display: flex;
+    justify-content: space-between;
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+  }
+  @media (max-width: 768px) {
+    .detail-nav {
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+  }
+</style>

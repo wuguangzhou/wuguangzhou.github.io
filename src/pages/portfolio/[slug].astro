@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BackgroundLayer from '../../components/global/BackgroundLayer.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'flow-editor' } },
+    { params: { slug: 'minimal-log' } },
+    { params: { slug: 'ink-notes' } },
+  ];
+}
+
+const { slug } = Astro.params;
+const projects = {
+  'flow-editor': { title: 'Flow Editor', year: '2024', role: '开源项目', desc: '轻量级流程图编辑器...' },
+  'minimal-log':  { title: 'Minimal Log',  year: '2023', role: '独立开发', desc: '极简日志聚合工具...' },
+  'ink-notes':    { title: 'Ink Notes',    year: '2023', role: '独立开发', desc: '极简私人笔记应用...' },
+};
+const project = projects[slug as keyof typeof projects] || projects['flow-editor'];
+---
+
+<BaseLayout>
+  <BackgroundLayer slot="bg-layer" section="works" />
+
+  <article class="page-section">
+    <div class="container">
+      <a href="/portfolio" class="back-link reveal">&larr; 返回作品集</a>
+      <h1 class="detail-title reveal">{project.title}</h1>
+      <div class="detail-meta reveal">
+        <span>{project.year}</span>
+        <span>&middot;</span>
+        <span>{project.role}</span>
+        <span>&middot;</span>
+        <span>前端开发</span>
+      </div>
+      <div class="detail-tags reveal">
+        <span class="badge">TypeScript</span>
+        <span class="badge">React</span>
+        <span class="badge">Canvas API</span>
+      </div>
+      <div class="detail-body reveal">
+        <p>{project.desc}</p>
+      </div>
+      <nav class="detail-nav reveal">
+        <a href="/portfolio/minimal-log" class="text-link">&larr; Minimal Log</a>
+        <a href="/portfolio/ink-notes" class="text-link">Ink Notes &rarr;</a>
+      </nav>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page-section {
+    padding: 160px 0 var(--space-2xl);
+  }
+  .back-link {
+    font-size: 0.875rem;
+    color: var(--color-text-dim);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: var(--space-lg);
+    transition: color 0.3s ease;
+  }
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+  .detail-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-bottom: var(--space-sm);
+  }
+  .detail-meta {
+    font-size: 0.875rem;
+    font-family: var(--font-mono);
+    color: var(--color-text-faint);
+    margin-bottom: var(--space-md);
+  }
+  .detail-tags {
+    display: flex;
+    gap: 10px;
+    margin-bottom: var(--space-lg);
+    flex-wrap: wrap;
+  }
+  .detail-body {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text-dim);
+    max-width: 680px;
+    margin-bottom: var(--space-xl);
+  }
+  .detail-body p + p {
+    margin-top: var(--space-sm);
+  }
+  .detail-nav {
+    display: flex;
+    justify-content: space-between;
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+  }
+</style>

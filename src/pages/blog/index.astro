@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BackgroundLayer from '../../components/global/BackgroundLayer.astro';
+import BlurText from '../../components/effects/BlurText.astro';
+import TrueFocus from '../../components/effects/TrueFocus.astro';
+---
+
+<BaseLayout>
+  <BackgroundLayer slot="bg-layer" section="blog" />
+
+  <section class="page-section">
+    <div class="container">
+      <BlurText as="h1" class="page-title">博客</BlurText>
+      <p class="page-desc reveal">关于技术、设计与独立思考的文字。</p>
+
+      <TrueFocus class="posts-list" blurAmount="2px">
+        <!-- 2025 -->
+        <div class="year-group reveal">
+          <h3 class="year-label">2025</h3>
+          <a href="/blog/perf" class="post-item">
+            <span class="post-date">01</span>
+            <div>
+              <div class="post-title">静态网站的性能优化实践</div>
+              <div class="post-desc">从 Lighthouse 60 到 98 的优化记录。</div>
+            </div>
+          </a>
+        </div>
+
+        <!-- 2024 -->
+        <div class="year-group reveal">
+          <h3 class="year-label">2024</h3>
+          <a href="/blog/tech-stack" class="post-item">
+            <span class="post-date">11</span>
+            <div>
+              <div class="post-title">一人公司的技术栈选择</div>
+              <div class="post-desc">关于独立开发者的工具链思考。</div>
+            </div>
+          </a>
+          <a href="/blog/simplicity" class="post-item">
+            <span class="post-date">09</span>
+            <div>
+              <div class="post-title">重新理解简洁</div>
+              <div class="post-desc">简洁不是少，而是不多余。</div>
+            </div>
+          </a>
+        </div>
+      </TrueFocus>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-section {
+    padding: 160px 0 var(--space-2xl);
+  }
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .year-group {
+    margin-bottom: var(--space-md);
+  }
+  .year-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-accent);
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-sm);
+    padding-bottom: var(--space-xs);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .post-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: var(--space-md);
+    padding: 28px 0;
+    border-bottom: 1px solid var(--color-border);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    align-items: baseline;
+  }
+  .post-item:first-child {
+    border-top: 1px solid var(--color-border);
+  }
+  .post-item:hover {
+    padding-left: 12px;
+  }
+  .post-date {
+    font-size: 0.8125rem;
+    font-family: var(--font-mono);
+    color: var(--color-text-faint);
+  }
+  .post-title {
+    font-size: 1.1rem;
+    font-weight: 450;
+    color: var(--color-text);
+    transition: color 0.3s ease;
+  }
+  .post-item:hover .post-title {
+    color: var(--color-accent);
+  }
+  .post-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-dim);
+    margin-top: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .post-item {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+  }
+</style>

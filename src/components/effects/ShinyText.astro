@@ -1,0 +1,34 @@
+---
+// ShinyText — 文字表面光泽流动
+export interface Props {
+  as?: string;
+  class?: string;
+}
+const { as = 'span', class: className = '' } = Astro.props;
+const Tag = as;
+---
+
+<Tag class={`shiny-text ${className}`}><slot /></Tag>
+
+<style>
+  .shiny-text {
+    background: linear-gradient(
+      110deg,
+      var(--color-text-dim) 30%,
+      var(--color-accent) 45%,
+      var(--color-text) 50%,
+      var(--color-accent) 55%,
+      var(--color-text-dim) 70%
+    );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -100% 0; }
+  }
+</style>

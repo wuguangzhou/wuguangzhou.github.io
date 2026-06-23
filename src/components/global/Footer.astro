@@ -1,0 +1,55 @@
+---
+import { SITE, SOCIAL_LINKS } from '../../lib/constants';
+---
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <p class="footer-copy">&copy; {new Date().getFullYear()} {SITE.name}</p>
+    <div class="footer-social">
+      {SOCIAL_LINKS.map(link => (
+        <a href={link.href} class="footer-link" target="_blank" rel="noopener noreferrer">
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--color-border);
+    padding: 32px 0 40px;
+    transition: border-color 0.3s ease;
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-copy {
+    font-size: 0.8125rem;
+    color: var(--color-text-faint);
+    transition: color 0.3s ease;
+  }
+  .footer-social {
+    display: flex;
+    gap: 20px;
+  }
+  .footer-link {
+    font-size: 0.8125rem;
+    color: var(--color-text-dim);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .footer-link:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 768px) {
+    .footer-inner {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+  }
+</style>

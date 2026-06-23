@@ -1,0 +1,46 @@
+---
+// TiltedCard — 3D 倾斜卡片，hover 时随鼠标旋转
+export interface Props {
+  class?: string;
+  maxTilt?: number;
+}
+const { maxTilt = 8, class: className = '' } = Astro.props;
+---
+
+<div class={`tilted-card ${className}`} style={`--tc-tilt: ${maxTilt}`}>
+  <div class="tilted-card-inner">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .tilted-card {
+    perspective: 800px;
+  }
+  .tilted-card-inner {
+    transition: transform 0.15s ease-out;
+    transform-style: preserve-3d;
+  }
+</style>
+
+<script>
+  const card = document.currentScript?.previousElementSibling as HTMLElement;
+  if (card) {
+    const inner = card.querySelector('.tilted-card-inner') as HTMLElement;
+    if (inner) {
+      const maxTilt = parseFloat(card.style.getPropertyValue('--tc-tilt')) || 8;
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        inner.style.transform =
+          `rotateY(${x * maxTilt}deg) rotateX(${-y * maxTilt}deg) scale3d(1.02, 1.02, 1.02)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        inner.style.transform = 'rotateY(0deg) rotateX(0deg) scale3d(1, 1, 1)';
+      });
+    }
+  }
+</script>

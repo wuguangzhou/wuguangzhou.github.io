@@ -1,0 +1,129 @@
+---
+import Header from '../components/global/Header.astro';
+import Footer from '../components/global/Footer.astro';
+import ClickSpark from '../components/effects/ClickSpark.astro';
+import { SITE } from '../lib/constants';
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="zh-CN" data-theme="ink">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..500&family=JetBrains+Mono:wght@400&family=Playfair+Display:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preload" as="image" href="/images/backgrounds/ink/hero-01.webp" fetchpriority="high" />
+
+    <title>{SITE.siteName} · {SITE.title}</title>
+    <meta name="description" content={`${SITE.siteName}——${SITE.title}。${SITE.tagline}`} />
+    <meta property="og:title" content={`${SITE.siteName} · ${SITE.title}`} />
+    <meta property="og:description" content={`${SITE.siteName}——${SITE.title}。${SITE.tagline}`} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wuguangzhou.github.io" />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <Header />
+    <!-- Background layer injected per page -->
+    <slot name="bg-layer" />
+    <!-- Click spark canvas -->
+    <ClickSpark />
+    <!-- Scroll progress -->
+    <div class="scroll-progress" id="scroll-progress" style="width:0%"></div>
+    <!-- Custom cursor -->
+    <div class="custom-cursor" id="custom-cursor"></div>
+
+    <main class="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<script>
+  // 所有交互在 DOM 就绪后初始化
+  function setup() {
+    // Scroll Progress
+    const bar = document.getElementById('scroll-progress');
+    if (bar) {
+      function update() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        bar.style.width = Math.min(progress, 100) + '%';
+        requestAnimationFrame(function(){});
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      update();
+    }
+
+    // Custom Cursor
+    if (window.matchMedia('(hover: hover)').matches) {
+      const cursor = document.getElementById('custom-cursor');
+      if (cursor) {
+        let mx = 0, my = 0, cx = 0, cy = 0;
+        document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; }, { passive: true });
+        var hoverTargets = document.querySelectorAll('a, button, .card, [data-cursor-hover]');
+        for (var i = 0; i < hoverTargets.length; i++) {
+          hoverTargets[i].addEventListener('mouseenter', function() { cursor.classList.add('hovering'); });
+          hoverTargets[i].addEventListener('mouseleave', function() { cursor.classList.remove('hovering'); });
+        }
+        function animate() {
+          cx += (mx - cx) * 0.15;
+          cy += (my - cy) * 0.15;
+          cursor.style.left = cx + 'px';
+          cursor.style.top = cy + 'px';
+          requestAnimationFrame(animate);
+        }
+        animate();
+      }
+    }
+
+    // Scroll Reveal (includes .reveal, .reveal-from-left, .reveal-from-right, .blur-text)
+    var revealEls = document.querySelectorAll('.reveal, .reveal-from-left, .reveal-from-right, .blur-text');
+    if (revealEls.length > 0) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      for (var j = 0; j < revealEls.length; j++) {
+        observer.observe(revealEls[j]);
+      }
+    }
+
+    // Card Spotlight
+    var cards = document.querySelectorAll('.card');
+    for (var k = 0; k < cards.length; k++) {
+      (function(card) {
+        card.addEventListener('mousemove', function(e) {
+          var rect = card.getBoundingClientRect();
+          card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+          card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+        });
+      })(cards[k]);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else {
+    setup();
+  }
+
+  // Restore saved theme
+  var saved = localStorage.getItem('theme');
+  if (saved === 'crow') {
+    document.documentElement.setAttribute('data-theme', 'crow');
+  }
+</script>

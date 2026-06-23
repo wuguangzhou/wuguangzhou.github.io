@@ -1,0 +1,79 @@
+---
+// BackgroundLayer.astro — 全视口背景图层 + 图库轮播
+export interface Props {
+  section: 'hero' | 'works' | 'blog' | 'about';
+}
+const { section } = Astro.props;
+---
+
+<div class="bg-layer" data-bg-section={section}></div>
+
+<script>
+  // 图库注册表 — 与 public/images/backgrounds/ 下的真实文件一一对应
+  const BG_POOLS = {
+    ink: {
+      hero:  ['/images/backgrounds/ink/hero-01.webp', '/images/backgrounds/ink/hero-02.webp', '/images/backgrounds/ink/hero-03.webp', '/images/backgrounds/ink/hero-04.webp'],
+      works: ['/images/backgrounds/ink/works-01.webp', '/images/backgrounds/ink/works-02.webp'],
+      blog:  ['/images/backgrounds/ink/blog-01.webp', '/images/backgrounds/ink/blog-02.webp'],
+      about: ['/images/backgrounds/ink/about-01.webp', '/images/backgrounds/ink/about-02.webp', '/images/backgrounds/ink/about-03.webp'],
+    },
+    crow: {
+      hero:  ['/images/backgrounds/crow/hero-01.webp', '/images/backgrounds/crow/hero-02.webp', '/images/backgrounds/crow/hero-03.webp', '/images/backgrounds/crow/hero-04.webp'],
+      works: ['/images/backgrounds/crow/works-01.webp', '/images/backgrounds/crow/works-02.webp', '/images/backgrounds/crow/works-03.webp'],
+      blog:  ['/images/backgrounds/crow/blog-01.webp', '/images/backgrounds/crow/blog-02.webp'],
+      about: ['/images/backgrounds/crow/about-01.webp', '/images/backgrounds/crow/about-02.webp', '/images/backgrounds/crow/about-03.webp'],
+    }
+  };
+
+  function pickBg(pool, theme, section) {
+    const key = 'bg-' + theme + '-' + section;
+    const last = sessionStorage.getItem(key);
+    if (pool.length > 1 && last) {
+      const rest = pool.filter(function(p) { return p !== last; });
+      const picked = rest[Math.floor(Math.random() * rest.length)];
+      sessionStorage.setItem(key, picked);
+      return picked;
+    }
+    const picked = pool[Math.floor(Math.random() * pool.length)];
+    sessionStorage.setItem(key, picked);
+    return picked;
+  }
+
+  function applyBackgrounds(theme) {
+    var layers = document.querySelectorAll('.bg-layer[data-bg-section]');
+    for (var i = 0; i < layers.length; i++) {
+      var el = layers[i];
+      var sec = el.getAttribute('data-bg-section');
+      var pool = BG_POOLS[theme] && BG_POOLS[theme][sec];
+      if (pool && pool.length > 0) {
+        var url = pickBg(pool, theme, sec);
+        // 覆盖层降到 0.55，让图片更可见
+        el.style.backgroundImage =
+          'linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url(' + url + ')';
+      }
+    }
+  }
+
+  // DOM 就绪后执行
+  function init() {
+    var theme = document.documentElement.getAttribute('data-theme') || 'ink';
+    applyBackgrounds(theme);
+
+    // 每 30 秒自动轮换背景图
+    setInterval(function() {
+      var currentTheme = document.documentElement.getAttribute('data-theme') || 'ink';
+      applyBackgrounds(currentTheme);
+    }, 30000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  // 主题切换时重新摇号
+  document.addEventListener('theme-changed', function(e) {
+    applyBackgrounds(e.detail.theme);
+  });
+</script>

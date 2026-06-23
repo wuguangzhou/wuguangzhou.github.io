@@ -1,0 +1,151 @@
+---
+import { SITE, NAV_LINKS } from '../../lib/constants';
+import Magnet from '../effects/Magnet.astro';
+---
+
+<header id="header" class="header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      {SITE.siteName}
+    </a>
+    <nav class="nav">
+      {NAV_LINKS.map(link => (
+        <Magnet strength="0.25"><a href={link.href} class="nav-link">{link.label}</a></Magnet>
+      ))}
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        aria-label="切换主题"
+        title="切换墨蓝 / 鸦青主题"
+      >
+        <span class="theme-icon">◐</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 24px 0;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+  }
+  .header.scrolled {
+    background: rgba(var(--color-bg-rgb), 0.45);
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    border-bottom: 1px solid rgba(var(--color-border-rgb), 0.5);
+  }
+
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    max-width: 100%;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+  }
+  .logo:hover {
+    color: var(--color-accent);
+  }
+
+  .nav {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .nav-link {
+    font-size: 1rem;
+    color: var(--color-text-dim);
+    text-decoration: none;
+    position: relative;
+    padding: 4px 0;
+    transition: color 0.3s ease;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 100%;
+    height: 1px;
+    background: var(--color-accent);
+    transform: translateX(-50%) scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  .nav-link:hover {
+    color: var(--color-text);
+  }
+  .nav-link:hover::after {
+    transform: translateX(-50%) scaleX(1);
+  }
+
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-text-dim);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 4px;
+  }
+  .theme-toggle:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent-dim);
+  }
+
+  @media (max-width: 768px) {
+    .header-inner {
+      padding: 0 24px;
+    }
+    .logo {
+      font-size: 1.1rem;
+    }
+    .nav {
+      gap: 22px;
+    }
+    .nav-link {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+
+<script>
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    header?.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Theme toggle
+  const toggle = document.getElementById('theme-toggle');
+  toggle?.addEventListener('click', () => {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'crow' ? 'ink' : 'crow';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    // Dispatch event for background rotation
+    document.dispatchEvent(new CustomEvent('theme-changed', { detail: { theme: next } }));
+  });
+</script>

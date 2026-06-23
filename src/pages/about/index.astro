@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BackgroundLayer from '../../components/global/BackgroundLayer.astro';
+import BlurText from '../../components/effects/BlurText.astro';
+import ShinyText from '../../components/effects/ShinyText.astro';
+import { SITE } from '../../lib/constants';
+---
+
+<BaseLayout>
+  <BackgroundLayer slot="bg-layer" section="about" />
+
+  <section class="page-section">
+    <div class="container">
+      <div class="about-grid">
+        <!-- Left: Avatar placeholder -->
+        <div class="about-avatar reveal-from-left">
+          <div class="avatar-placeholder">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="40" r="20" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <path d="M20 85 Q50 60 80 85" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Right: Bio -->
+        <div class="about-text reveal-from-right">
+          <BlurText as="h1" class="page-title">{SITE.name}</BlurText>
+          <p class="about-bio">
+            {SITE.title}，{SITE.tagline}
+          </p>
+          <p class="about-bio">
+            专注构建简洁可用的产品。对技术选型有洁癖，
+            相信好的工具能让一个人的产出不输一个团队。
+          </p>
+
+          <!-- Motto -->
+          <blockquote class="motto">
+            <ShinyText as="p">
+              如果我终将走向灭亡，那么在此之前我要去看最美的风景、
+              去爱爱我之人、去做最有价值的事，去体验人生的意义。
+            </ShinyText>
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- Tech Stack -->
+      <div class="about-section reveal">
+        <BlurText as="h2" class="section-title">技术栈</BlurText>
+        <div class="tag-cloud">
+          <span class="badge">TypeScript</span>
+          <span class="badge">React</span>
+          <span class="badge">Next.js</span>
+          <span class="badge">Astro</span>
+          <span class="badge">Go</span>
+          <span class="badge">Rust</span>
+          <span class="badge">Python</span>
+          <span class="badge">Tailwind CSS</span>
+          <span class="badge">PostgreSQL</span>
+          <span class="badge">SQLite</span>
+          <span class="badge">Docker</span>
+          <span class="badge">Git</span>
+        </div>
+      </div>
+
+      <!-- What I'm doing -->
+      <div class="about-section reveal">
+        <BlurText as="h2" class="section-title">目前在做什么</BlurText>
+        <div class="doing-list">
+          <div class="doing-item">
+            <span class="doing-bullet">&mdash;</span>
+            <span>探索一人公司的无限可能性</span>
+          </div>
+          <div class="doing-item">
+            <span class="doing-bullet">&mdash;</span>
+            <span>持续打磨自己的工具链，追求开发体验的极致</span>
+          </div>
+          <div class="doing-item">
+            <span class="doing-bullet">&mdash;</span>
+            <span>偶尔写一些关于技术、产品与独立思考的文字</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-section {
+    padding: 160px 0 var(--space-2xl);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .avatar-placeholder {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-faint);
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .avatar-placeholder svg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .about-bio {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text-dim);
+    max-width: 520px;
+  }
+  .about-bio + .about-bio {
+    margin-top: var(--space-sm);
+  }
+
+  .motto {
+    margin-top: var(--space-lg);
+    padding: var(--space-md) 0;
+    border-left: 2px solid var(--color-accent);
+    padding-left: var(--space-md);
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--color-text-dim);
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  .about-section {
+    margin-top: var(--space-xl);
+  }
+  .tag-cloud {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .doing-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  .doing-item {
+    font-size: 0.95rem;
+    color: var(--color-text-dim);
+    display: flex;
+    gap: var(--space-xs);
+  }
+  .doing-bullet {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 768px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    .avatar-placeholder {
+      width: 100px;
+      height: 100px;
+    }
+  }
+</style>

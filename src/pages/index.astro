@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BackgroundLayer from '../components/global/BackgroundLayer.astro';
+import Aurora from '../components/effects/Aurora.astro';
+import HeroSection from '../components/home/HeroSection.astro';
+import FeaturedWorks from '../components/home/FeaturedWorks.astro';
+import FeaturedPosts from '../components/home/FeaturedPosts.astro';
+import CTASection from '../components/home/CTASection.astro';
+---
+
+<BaseLayout>
+  <BackgroundLayer slot="bg-layer" section="hero" />
+  <Aurora />
+  <HeroSection />
+  <FeaturedWorks />
+  <FeaturedPosts />
+  <CTASection />
+</BaseLayout>
