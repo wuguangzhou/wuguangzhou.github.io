@@ -1,11 +1,10 @@
-# Decap CMS 配置文件 · 周游·记
-# 文档：https://decapcms.org/docs/configuration-options/
+# Netlify CMS 配置文件 · 周游·记
+# 文档：https://www.netlifycms.org/docs/configuration-options/
 
 backend:
   name: github
   repo: wuguangzhou/wuguangzhou.github.io
   branch: main
-  # 下面这行等你创建好 GitHub OAuth App 后取消注释并填入 client_id
   client_id: Ov23liM05MbKmS9dimqS
 
 # 内容文件存储路径
