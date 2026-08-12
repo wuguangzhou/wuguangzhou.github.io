@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { slug } from '../lib/utils';
+import TickerTape from '../components/ui/TickerTape.astro';
+import { SOCIAL_LINKS } from '../lib/constants';
 
 const posts = (await getCollection('blog'))
   .filter((p) => !p.data.draft)
@@ -17,11 +19,17 @@ const works = (await getCollection('portfolio'))
   <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <h1 class="hero-title reveal">周游</h1>
+      <h1 class="hero-title reveal">周游的小破站</h1>
       <p class="hero-sub reveal">独立开发者 · 写代码也写字</p>
-      <div class="hero-links reveal">
-        <a href="https://github.com/wuguangzhou" target="_blank" rel="noopener">GitHub</a>
-        <a href="mailto:2814529243@qq.com">Email</a>
+      <div class="hero-ticker reveal">
+        <TickerTape
+          items={SOCIAL_LINKS.map((s) => ({
+            name: s.name,
+            label: s.label,
+            href: s.url,
+            external: s.name !== 'rss',
+          }))}
+        />
       </div>
     </div>
   </section>
@@ -81,10 +89,8 @@ const works = (await getCollection('portfolio'))
 <style>
   .hero { padding: 200px 0 120px; text-align: center; }
   .hero-title { font-family: var(--font-serif); font-size: clamp(3rem, 8vw, 5rem); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 20px; }
-  .hero-sub { font-size: 1.15rem; color: var(--color-text-dim); margin-bottom: 32px; }
-  .hero-links { display: flex; gap: 24px; justify-content: center; }
-  .hero-links a { color: var(--color-text-dim); text-decoration: none; font-size: 0.9rem; }
-  .hero-links a:hover { color: var(--color-accent); }
+  .hero-sub { font-size: 1.15rem; color: var(--color-text-dim); margin-bottom: 24px; }
+  .hero-ticker { margin-bottom: 0; }
 
   .works-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
   @media (max-width: 768px) { .works-grid { grid-template-columns: 1fr; } }

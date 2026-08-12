@@ -9,14 +9,14 @@ const categories = ['全部', ...new Set(items.map((i) => i.data.category))];
 ---
 
 <BaseLayout title="作品 · 周游" description="独立开发与开源项目。">
-  <section class="section" style="padding-top:160px">
+  <section class="section" style="padding-top:160px;padding-bottom:40px">
     <div class="container">
       <h1 class="page-title reveal">作品</h1>
-      <p class="page-desc reveal">独立开发与开源项目。</p>
+      <p class="page-desc reveal" style="margin-bottom:0">独立开发与开源项目。</p>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" style="padding-top:0">
     <div class="container">
       <div class="filter-bar reveal" id="filter-bar">
         {categories.map((cat) => (
@@ -59,15 +59,15 @@ const categories = ['全部', ...new Set(items.map((i) => i.data.category))];
 </script>
 
 <style>
-  .filter-bar { display: flex; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
   .filter-btn { padding: 6px 16px; font-size: 0.8125rem; font-family: var(--font-mono); color: var(--color-text-dim); background: transparent; border: 1px solid var(--color-border); border-radius: var(--radius-full); cursor: pointer; transition: all 0.2s ease; }
   .filter-btn.active, .filter-btn:hover { color: var(--color-accent); border-color: var(--color-accent); }
-  .portfolio-grid { columns: 2; gap: 24px; }
+  .portfolio-grid { columns: 2; gap: 20px; }
   @media (max-width: 768px) { .portfolio-grid { columns: 1; } }
-  .portfolio-card { display: block; break-inside: avoid; margin-bottom: 24px; padding: 28px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); text-decoration: none; transition: transform 0.3s ease; }
+  .portfolio-card { display: block; break-inside: avoid; margin-bottom: 20px; padding: 24px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); text-decoration: none; transition: transform 0.3s ease; }
   .portfolio-card:hover { transform: translateY(-4px); }
-  .card-year { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent); margin-bottom: 8px; }
-  .card-title { font-size: 1.15rem; font-weight: 600; color: var(--color-text); margin-bottom: 8px; }
-  .card-desc { font-size: 0.875rem; color: var(--color-text-dim); margin-bottom: 16px; line-height: 1.6; }
+  .card-year { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent); margin-bottom: 6px; }
+  .card-title { font-size: 1.15rem; font-weight: 600; color: var(--color-text); margin-bottom: 6px; }
+  .card-desc { font-size: 0.875rem; color: var(--color-text-dim); margin-bottom: 12px; line-height: 1.6; }
   .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 </style>

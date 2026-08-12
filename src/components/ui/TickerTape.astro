@@ -1,0 +1,147 @@
+---
+import SocialIcon from './SocialIcon.astro';
+
+export interface TickerItem {
+  name: 'github' | 'email' | 'rss';
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+const { items } = Astro.props;
+---
+
+<div class="ticker-wrap" id="ticker-wrap" aria-label="社交链接滚动条">
+  <div class="ticker-track" id="ticker-track">
+    {items.map((item) => (
+      <a
+        href={item.href}
+        class="ticker-item"
+        target={item.external ? '_blank' : undefined}
+        rel={item.external ? 'noopener' : undefined}
+        aria-label={item.label}
+      >
+        <SocialIcon name={item.name} size={18} />
+        <span class="ticker-label">{item.label}</span>
+      </a>
+    ))}
+  </div>
+</div>
+
+<script>
+  function initTicker() {
+    const wrap = document.getElementById('ticker-wrap');
+    const track = document.getElementById('ticker-track');
+    if (!wrap || !track) return;
+
+    const containerWidth = wrap.offsetWidth;
+    const trackWidth = track.offsetWidth;
+    // Blank gap: after the last icon exits left, how much empty space before
+    // the first icon re-emerges from the right. ~60% of container width.
+    const blankGap = containerWidth * 0.3;
+
+    // Start position: track is just off-screen to the right
+    // (the mask at 92-100% will fade it in like emerging from a tunnel)
+    let pos = containerWidth;
+    const speed = 0.6; // pixels per frame (~36px/s at 60fps)
+
+    let paused = false;
+    wrap.addEventListener('mouseenter', () => { paused = true; });
+    wrap.addEventListener('mouseleave', () => { paused = false; });
+
+    function tick() {
+      if (!paused) {
+        pos -= speed;
+
+        // When the entire track has scrolled past the left edge
+        // PLUS the blank gap, reset to the right side.
+        // At this point all icons are off-screen left, there's blank space,
+        // then icons emerge from the right tunnel.
+        if (pos < -(trackWidth + blankGap)) {
+          pos = containerWidth;
+        }
+
+        track.style.transform = `translateX(${pos}px)`;
+      }
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  // Defer until layout is painted and offsetWidth is available
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTicker);
+  } else {
+    requestAnimationFrame(() => requestAnimationFrame(initTicker));
+  }
+</script>
+
+<style>
+  .ticker-wrap {
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    /*
+     * Tunnel mask: fully transparent at edges (0-8%, 92-100%),
+     * fully opaque in the middle. Icons "emerge from darkness"
+     * on the right and "disappear into darkness" on the left.
+     */
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 12%,
+      black 88%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 12%,
+      black 88%,
+      transparent 100%
+    );
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 40px;
+    width: max-content;
+    will-change: transform;
+  }
+
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    padding: 8px 0;
+    transition: color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .ticker-item:hover {
+    color: var(--color-accent);
+  }
+
+  .ticker-label {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track {
+      transform: none !important;
+      justify-content: center;
+    }
+    .ticker-wrap {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+  }
+</style>

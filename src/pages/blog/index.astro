@@ -16,14 +16,14 @@ const years = Object.keys(groups).sort((a, b) => parseInt(b) - parseInt(a));
 ---
 
 <BaseLayout title="博客 · 周游" description="关于技术、设计与独立思考的文字。">
-  <section class="section" style="padding-top:160px">
+  <section class="section" style="padding-top:160px;padding-bottom:40px">
     <div class="container">
       <h1 class="page-title reveal">博客</h1>
-      <p class="page-desc reveal">关于技术、设计与独立思考的文字。</p>
+      <p class="page-desc reveal" style="margin-bottom:0">关于技术、设计与独立思考的文字。</p>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" style="padding-top:0">
     <div class="container">
       {years.map((year) => (
         <div class="year-group reveal">
@@ -47,9 +47,9 @@ const years = Object.keys(groups).sort((a, b) => parseInt(b) - parseInt(a));
 </BaseLayout>
 
 <style>
-  .year-group { margin-bottom: 48px; }
-  .year-label { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 400; color: var(--color-accent); letter-spacing: 0.05em; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--color-border); }
-  .post-item { display: grid; grid-template-columns: 60px 1fr; gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--color-border); text-decoration: none; transition: padding 0.3s ease; }
+  .year-group { margin-bottom: 32px; }
+  .year-label { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 400; color: var(--color-accent); letter-spacing: 0.05em; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border); }
+  .post-item { display: grid; grid-template-columns: 60px 1fr; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--color-border); text-decoration: none; transition: padding 0.3s ease; }
   .post-item:first-of-type { border-top: 1px solid var(--color-border); }
   .post-item:hover { padding-left: 12px; }
   .post-date { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-text-faint); }

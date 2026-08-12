@@ -1,12 +1,22 @@
 ---
-import { SITE } from '../../lib/constants';
+import { SITE, SOCIAL_LINKS } from '../../lib/constants';
+import SocialIcon from '../ui/SocialIcon.astro';
 ---
 
 <footer>
   <div class="container footer-inner">
-    <div class="footer-links">
-      <a href={`https://github.com/${SITE.github}`} target="_blank" rel="noopener">GitHub</a>
-      <a href={`mailto:${SITE.email}`}>Email</a>
+    <div class="footer-socials">
+      {SOCIAL_LINKS.map((link) => (
+        <a
+          href={link.url}
+          class="social-link"
+          target={link.name !== 'rss' ? '_blank' : undefined}
+          rel={link.name !== 'rss' ? 'noopener' : undefined}
+          aria-label={link.label}
+        >
+          <SocialIcon name={link.name} size={20} />
+        </a>
+      ))}
     </div>
     <p class="footer-copy">&copy; {new Date().getFullYear()} {SITE.name}</p>
   </div>
@@ -15,11 +25,25 @@ import { SITE } from '../../lib/constants';
 <style>
   footer { padding: 60px 0; }
   .footer-inner { display: flex; justify-content: space-between; align-items: center; }
-  .footer-links { display: flex; gap: 24px; }
-  .footer-links a { color: var(--color-text-dim); text-decoration: none; font-size: 0.875rem; }
-  .footer-links a:hover { color: var(--color-text); }
+  .footer-socials { display: flex; gap: 20px; align-items: center; }
+  .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    color: var(--color-text-dim);
+    text-decoration: none;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+  .social-link:hover {
+    color: var(--color-accent);
+    background: var(--color-surface);
+  }
   .footer-copy { color: var(--color-text-faint); font-size: 0.8125rem; }
   @media (max-width: 768px) {
-    .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+    .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+    .footer-socials { gap: 16px; }
   }
 </style>

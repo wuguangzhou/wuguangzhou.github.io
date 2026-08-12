@@ -1,10 +1,10 @@
 ---
-import { SITE, NAV_LINKS } from '../../lib/constants';
+import { NAV_LINKS } from '../../lib/constants';
 ---
 
 <header id="site-header">
   <div class="header-inner">
-    <a href="/" class="logo">{SITE.name}</a>
+    <a href="/" class="logo">周游的小破站</a>
     <nav>
       {NAV_LINKS.map((link) => (
         <a href={link.href} class="nav-link">{link.label}</a>
