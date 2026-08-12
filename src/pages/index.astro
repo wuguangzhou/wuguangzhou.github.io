@@ -1,18 +1,113 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import BackgroundLayer from '../components/global/BackgroundLayer.astro';
-import Aurora from '../components/effects/Aurora.astro';
-import HeroSection from '../components/home/HeroSection.astro';
-import FeaturedWorks from '../components/home/FeaturedWorks.astro';
-import FeaturedPosts from '../components/home/FeaturedPosts.astro';
-import CTASection from '../components/home/CTASection.astro';
+import { getCollection } from 'astro:content';
+import { slug } from '../lib/utils';
+
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const works = (await getCollection('portfolio'))
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 2);
 ---
 
 <BaseLayout>
-  <BackgroundLayer slot="bg-layer" section="hero" />
-  <Aurora />
-  <HeroSection />
-  <FeaturedWorks />
-  <FeaturedPosts />
-  <CTASection />
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-title reveal">周游</h1>
+      <p class="hero-sub reveal">独立开发者 · 写代码也写字</p>
+      <div class="hero-links reveal">
+        <a href="https://github.com/wuguangzhou" target="_blank" rel="noopener">GitHub</a>
+        <a href="mailto:2814529243@qq.com">Email</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Works -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title reveal">精选作品</h2>
+      <div class="works-grid reveal">
+        {works.map((item) => (
+          <a href={`/portfolio/${slug(item)}`} class="work-card">
+            <div class="work-year">{item.data.year}</div>
+            <h3 class="work-title">{item.data.title}</h3>
+            <p class="work-desc">{item.data.description}</p>
+            <div class="work-tags">
+              {item.data.techStack?.map((t: string) => <span class="badge">{t}</span>)}
+            </div>
+          </a>
+        ))}
+      </div>
+      <p class="section-more reveal">
+        <a href="/portfolio" class="text-link">查看全部作品 →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Featured Posts -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title reveal">最近文章</h2>
+      <div class="posts-list reveal">
+        {posts.map((post) => (
+          <a href={`/blog/${slug(post)}`} class="post-item">
+            <span class="post-date">{String(post.data.date.getMonth() + 1).padStart(2, '0')}</span>
+            <div>
+              <div class="post-title">{post.data.title}</div>
+              <div class="post-desc">{post.data.description}</div>
+            </div>
+          </a>
+        ))}
+      </div>
+      <p class="section-more reveal">
+        <a href="/blog" class="text-link">阅读更多 →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta">
+    <div class="container">
+      <p class="cta-text reveal">有想做的事，不妨聊一聊。</p>
+      <a href="mailto:2814529243@qq.com" class="cta-email reveal">2814529243@qq.com</a>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .hero { padding: 200px 0 120px; text-align: center; }
+  .hero-title { font-family: var(--font-serif); font-size: clamp(3rem, 8vw, 5rem); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 20px; }
+  .hero-sub { font-size: 1.15rem; color: var(--color-text-dim); margin-bottom: 32px; }
+  .hero-links { display: flex; gap: 24px; justify-content: center; }
+  .hero-links a { color: var(--color-text-dim); text-decoration: none; font-size: 0.9rem; }
+  .hero-links a:hover { color: var(--color-accent); }
+
+  .works-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 768px) { .works-grid { grid-template-columns: 1fr; } }
+  .work-card { display: block; padding: 32px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); text-decoration: none; transition: transform 0.3s ease; }
+  .work-card:hover { transform: translateY(-4px); }
+  .work-year { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent); margin-bottom: 8px; }
+  .work-title { font-size: 1.2rem; font-weight: 600; color: var(--color-text); margin-bottom: 8px; }
+  .work-desc { font-size: 0.9rem; color: var(--color-text-dim); margin-bottom: 16px; line-height: 1.6; }
+  .work-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .posts-list { display: flex; flex-direction: column; }
+  .post-item { display: grid; grid-template-columns: 60px 1fr; gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--color-border); text-decoration: none; transition: padding 0.3s ease; }
+  .post-item:first-of-type { border-top: 1px solid var(--color-border); }
+  .post-item:hover { padding-left: 12px; }
+  .post-date { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-text-faint); }
+  .post-title { font-size: 1.05rem; font-weight: 500; color: var(--color-text); }
+  .post-item:hover .post-title { color: var(--color-accent); }
+  .post-desc { font-size: 0.875rem; color: var(--color-text-dim); margin-top: 4px; }
+  @media (max-width: 768px) { .post-item { grid-template-columns: 1fr; gap: 6px; } }
+
+  .cta { text-align: center; }
+  .cta-text { font-family: var(--font-serif); font-size: 1.5rem; font-style: italic; color: var(--color-text-dim); margin-bottom: 16px; }
+  .cta-email { font-size: 1.5rem; font-weight: 500; color: var(--color-accent); text-decoration: none; }
+  .cta-email:hover { text-decoration: underline; }
+  @media (max-width: 768px) { .cta-email { font-size: 1.1rem; } }
+</style>

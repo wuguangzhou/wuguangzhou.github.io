@@ -1,72 +1,59 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import BackgroundLayer from '../../components/global/BackgroundLayer.astro';
-import BlurText from '../../components/effects/BlurText.astro';
-import TrueFocus from '../../components/effects/TrueFocus.astro';
 import { getCollection } from 'astro:content';
+import { slug } from '../../lib/utils';
 
-const posts = await getCollection('blog', ({ data }) => {
-  return import.meta.env.PROD ? true : true; // 全部
-});
-// 按日期倒序
-posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-// 按年份分组
 const groups: Record<string, typeof posts> = {};
-posts.forEach(p => {
+posts.forEach((p) => {
   const year = p.data.date.getFullYear().toString();
-  if (!groups[year]) groups[year] = [];
-  groups[year].push(p);
+  (groups[year] ??= []).push(p);
 });
 const years = Object.keys(groups).sort((a, b) => parseInt(b) - parseInt(a));
 ---
 
-<BaseLayout>
-  <BackgroundLayer slot="bg-layer" section="blog" />
-  <section class="page-section">
+<BaseLayout title="博客 · 周游" description="关于技术、设计与独立思考的文字。">
+  <section class="section" style="padding-top:160px">
     <div class="container">
-      <BlurText as="h1" class="page-title">博客</BlurText>
+      <h1 class="page-title reveal">博客</h1>
       <p class="page-desc reveal">关于技术、设计与独立思考的文字。</p>
-      <TrueFocus class="posts-list" blurAmount="2px">
-        {years.map(year => (
-          <div class="year-group reveal">
-            <h3 class="year-label">{year}</h3>
-            {groups[year].map(post => (
-              <a href={`/blog/${post.id}`} class="post-item">
-                <span class="post-date">{String(post.data.date.getMonth() + 1).padStart(2, '0')}</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {years.map((year) => (
+        <div class="year-group reveal">
+          <h3 class="year-label">{year}</h3>
+          {groups[year].map((post) => {
+            const month = String(post.data.date.getMonth() + 1).padStart(2, '0');
+            return (
+              <a href={`/blog/${slug(post)}`} class="post-item">
+                <span class="post-date">{month}</span>
                 <div>
                   <div class="post-title">{post.data.title}</div>
                   <div class="post-desc">{post.data.description}</div>
                 </div>
               </a>
-            ))}
-          </div>
-        ))}
-      </TrueFocus>
+            );
+          })}
+        </div>
+      ))}
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .page-section { padding: 160px 0 var(--space-2xl); position: relative; z-index: 1; }
-  .page-desc { font-size: 1.05rem; color: var(--color-text-dim); margin-bottom: var(--space-lg); }
-  .posts-list { display: flex; flex-direction: column; }
-  .year-group { margin-bottom: var(--space-md); }
-  .year-label {
-    font-family: var(--font-mono); font-size: 0.75rem; font-weight: 400;
-    color: var(--color-accent); letter-spacing: 0.05em;
-    margin-bottom: var(--space-sm); padding-bottom: var(--space-xs);
-    border-bottom: 1px solid var(--color-border);
-  }
-  .post-item {
-    display: grid; grid-template-columns: 100px 1fr; gap: var(--space-md);
-    padding: 28px 0; border-bottom: 1px solid var(--color-border);
-    transition: all 0.3s ease; text-decoration: none; align-items: baseline;
-  }
+  .year-group { margin-bottom: 48px; }
+  .year-label { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 400; color: var(--color-accent); letter-spacing: 0.05em; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--color-border); }
+  .post-item { display: grid; grid-template-columns: 60px 1fr; gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--color-border); text-decoration: none; transition: padding 0.3s ease; }
   .post-item:first-of-type { border-top: 1px solid var(--color-border); }
   .post-item:hover { padding-left: 12px; }
-  .post-date { font-size: 0.8125rem; font-family: var(--font-mono); color: var(--color-text-faint); }
-  .post-title { font-size: 1.1rem; font-weight: 450; color: var(--color-text); transition: color 0.3s ease; }
+  .post-date { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-text-faint); }
+  .post-title { font-size: 1.05rem; font-weight: 500; color: var(--color-text); transition: color 0.3s ease; }
   .post-item:hover .post-title { color: var(--color-accent); }
   .post-desc { font-size: 0.875rem; color: var(--color-text-dim); margin-top: 4px; }
   @media (max-width: 768px) { .post-item { grid-template-columns: 1fr; gap: 6px; } }

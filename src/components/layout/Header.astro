@@ -1,0 +1,66 @@
+---
+import { SITE, NAV_LINKS } from '../../lib/constants';
+---
+
+<header id="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">{SITE.name}</a>
+    <nav>
+      {NAV_LINKS.map((link) => (
+        <a href={link.href} class="nav-link">{link.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+</script>
+
+<style>
+  #site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 20px 0;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease, padding 0.3s ease;
+  }
+  #site-header.scrolled {
+    background: rgba(252, 252, 250, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 12px 0;
+  }
+  .header-inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  nav { display: flex; gap: 32px; }
+  .nav-link {
+    font-size: 0.9rem;
+    color: var(--color-text-dim);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .nav-link:hover { color: var(--color-text); }
+  @media (max-width: 768px) {
+    .header-inner { padding: 0 24px; }
+    nav { gap: 20px; }
+  }
+</style>

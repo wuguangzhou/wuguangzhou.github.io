@@ -1,0 +1,25 @@
+---
+import { SITE } from '../../lib/constants';
+---
+
+<footer>
+  <div class="container footer-inner">
+    <div class="footer-links">
+      <a href={`https://github.com/${SITE.github}`} target="_blank" rel="noopener">GitHub</a>
+      <a href={`mailto:${SITE.email}`}>Email</a>
+    </div>
+    <p class="footer-copy">&copy; {new Date().getFullYear()} {SITE.name}</p>
+  </div>
+</footer>
+
+<style>
+  footer { padding: 60px 0; }
+  .footer-inner { display: flex; justify-content: space-between; align-items: center; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: var(--color-text-dim); text-decoration: none; font-size: 0.875rem; }
+  .footer-links a:hover { color: var(--color-text); }
+  .footer-copy { color: var(--color-text-faint); font-size: 0.8125rem; }
+  @media (max-width: 768px) {
+    .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>

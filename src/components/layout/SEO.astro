@@ -1,0 +1,27 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+const {
+  title = '周游·记 · 独立开发者',
+  description = '独立开发者。写代码也写字。',
+  ogImage = '/images/og-default.png',
+} = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:type" content="website" />
+<meta property="og:image" content={new URL(ogImage, Astro.site).href} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />

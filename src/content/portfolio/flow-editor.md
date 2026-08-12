@@ -3,7 +3,11 @@ title: Flow Editor
 year: 2024
 category: 开源项目
 role: 前端开发
-techStack: [TypeScript, React, Canvas]
+techStack:
+  - TypeScript
+  - React
+  - Canvas
+  - 周游
 description: 一个轻量级的流程图编辑器，支持实时协作。基于 Canvas API 构建，支持导出为标准格式。
 ---
 

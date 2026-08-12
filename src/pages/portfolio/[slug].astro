@@ -1,66 +1,77 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import BackgroundLayer from '../../components/global/BackgroundLayer.astro';
 import { getCollection } from 'astro:content';
+import { marked } from 'marked';
+import { slug as getSlug } from '../../lib/utils';
 
 export async function getStaticPaths() {
-  const projects = await getCollection('portfolio');
-  return projects.map(p => ({ params: { slug: p.id } }));
+  const items = await getCollection('portfolio');
+  return items.map((i) => ({ params: { slug: i.id.replace(/\.md$/, '') } }));
 }
 
 const { slug } = Astro.params;
-const projects = await getCollection('portfolio');
-const project = projects.find(p => p.id === slug);
-if (!project) throw new Error('Project not found: ' + slug);
+const item = (await getCollection('portfolio')).find((i) => i.id.replace(/\.md$/, '') === slug);
+if (!item) return Astro.redirect('/404');
 
-const bodyHtml = project.body
-  ? project.body.replace(/^---[\s\S]*?---\n*/, '').split('\n\n').map((p: string) => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`).join('')
-  : '';
-
-const sorted = projects.sort((a, b) => b.data.year - a.data.year);
-const idx = sorted.findIndex(p => p.id === slug);
-const prev = idx < sorted.length - 1 ? sorted[idx + 1] : null;
-const next = idx > 0 ? sorted[idx - 1] : null;
+const contentHtml = marked.parse(item.body ?? '');
+const all = (await getCollection('portfolio')).sort((a, b) => b.data.year - a.data.year);
+const idx = all.findIndex((i) => getSlug(i) === slug);
+const prev = idx > 0 ? all[idx - 1] : null;
+const next = idx < all.length - 1 ? all[idx + 1] : null;
 ---
 
-<BaseLayout>
-  <BackgroundLayer slot="bg-layer" section="works" />
-  <article class="page-section">
+<BaseLayout title={`${item.data.title} · 周游`} description={item.data.description}>
+  <section class="section" style="padding-top:160px">
     <div class="container">
-      <a href="/portfolio" class="back-link reveal">&larr; 返回作品集</a>
-      <h1 class="detail-title reveal">{project.data.title}</h1>
+      <a href="/portfolio" class="back-link reveal">← 返回作品列表</a>
       <div class="detail-meta reveal">
-        <span>{project.data.year}</span>
-        <span>&middot;</span>
-        <span>{project.data.category}</span>
-        {project.data.role && <><span>&middot;</span><span>{project.data.role}</span></>}
+        <span class="badge">{item.data.category}</span>
+        <span>{item.data.year}</span>
+        {item.data.role && <span>角色：{item.data.role}</span>}
       </div>
-      <div class="detail-tags reveal">
-        {project.data.techStack.map(tech => <span class="badge">{tech}</span>)}
+      <h1 class="detail-title reveal">{item.data.title}</h1>
+      <p class="detail-desc reveal">{item.data.description}</p>
+
+      {item.data.techStack?.length > 0 && (
+        <div class="detail-tags reveal">
+          {item.data.techStack.map((t: string) => <span class="badge">{t}</span>)}
+        </div>
+      )}
+
+      <div class="detail-links reveal">
+        {item.data.url && (
+          <a href={item.data.url} target="_blank" rel="noopener" class="text-link">访问项目 →</a>
+        )}
+        {item.data.repo && (
+          <a href={item.data.repo} target="_blank" rel="noopener" class="text-link">GitHub →</a>
+        )}
       </div>
-      <div class="prose reveal" set:html={bodyHtml} />
-      <nav class="detail-nav reveal">
-        {prev ? <a href={`/portfolio/${prev.id}`} class="text-link">&larr; {prev.data.title}</a> : <span />}
-        {next ? <a href={`/portfolio/${next.id}`} class="text-link">{next.data.title} &rarr;</a> : <span />}
-      </nav>
+
+      {item.body?.trim() && (
+        <div class="prose reveal">
+          <div set:html={contentHtml} />
+        </div>
+      )}
     </div>
-  </article>
+  </section>
+
+  <nav class="detail-nav container">
+    {prev && <a href={`/portfolio/${getSlug(prev)}`} class="text-link">← {prev.data.title}</a>}
+    {next && <a href={`/portfolio/${getSlug(next)}`} class="text-link">{next.data.title} →</a>}
+  </nav>
 </BaseLayout>
 
 <style>
-  .page-section { padding: 160px 0 var(--space-2xl); position: relative; z-index: 1; }
-  .back-link { font-size: 0.875rem; color: var(--color-text-dim); text-decoration: none; display: inline-block; margin-bottom: var(--space-lg); transition: color 0.3s ease; }
-  .back-link:hover { color: var(--color-accent); }
-  .detail-title { font-family: var(--font-heading); font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 600; letter-spacing: -0.02em; color: var(--color-text); margin-bottom: var(--space-sm); }
-  .detail-meta { font-size: 0.875rem; font-family: var(--font-mono); color: var(--color-text-faint); margin-bottom: var(--space-md); display: flex; gap: 0.4em; flex-wrap: wrap; }
-  .detail-tags { display: flex; gap: 10px; margin-bottom: var(--space-lg); flex-wrap: wrap; }
-  .badge {
-    display: inline-block; padding: 3px 10px; font-family: var(--font-mono);
-    font-size: 0.6875rem; color: var(--color-accent-dim); border: 1px solid var(--color-border);
-    border-radius: 9999px; transition: all 0.3s ease;
-  }
-  .prose { font-size: 1rem; line-height: 1.8; color: var(--color-text-dim); max-width: 680px; margin-bottom: var(--space-xl); }
-  .prose :global(p) { margin-bottom: 1.2em; }
-  .detail-nav { display: flex; justify-content: space-between; padding-top: var(--space-lg); border-top: 1px solid var(--color-border); }
-  @media (max-width: 768px) { .detail-nav { flex-direction: column; gap: var(--space-sm); } }
+  .back-link { color: var(--color-text-dim); text-decoration: none; font-size: 0.875rem; }
+  .detail-meta { display: flex; gap: 12px; align-items: center; margin: 24px 0 16px; font-size: 0.875rem; color: var(--color-text-dim); }
+  .detail-title { font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; }
+  .detail-desc { font-size: 1.1rem; color: var(--color-text-dim); margin-bottom: 24px; line-height: 1.7; }
+  .detail-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 24px; }
+  .detail-links { display: flex; gap: 24px; margin-bottom: 40px; }
+  .prose { max-width: 680px; font-size: 1.05rem; line-height: 1.8; }
+  .prose :global(h2) { font-family: var(--font-serif); font-size: 1.5rem; margin: 48px 0 16px; }
+  .prose :global(p) { margin: 16px 0; }
+  .prose :global(a) { color: var(--color-accent); }
+  .detail-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-bottom: 80px; }
+  @media (max-width: 768px) { .detail-nav { grid-template-columns: 1fr; } }
 </style>
