@@ -4,6 +4,9 @@ import { getCollection } from 'astro:content';
 import { slug } from '../lib/utils';
 import TickerTape from '../components/ui/TickerTape.astro';
 import { SOCIAL_LINKS } from '../lib/constants';
+import SolarSystem from '../components/effects/SolarSystem.tsx';
+import DepthText from '../components/effects/DepthText.jsx';
+import ParticleText from '../components/effects/ParticleText.jsx';
 
 const posts = (await getCollection('blog'))
   .filter((p) => !p.data.draft)
@@ -18,9 +21,37 @@ const works = (await getCollection('portfolio'))
 <BaseLayout>
   <!-- Hero -->
   <section class="hero">
-    <div class="container">
-      <h1 class="hero-title reveal">周游的小破站</h1>
-      <p class="hero-sub reveal">独立开发者 · 写代码也写字</p>
+    {/* 星系背景（暂时隐藏）：取消注释即可恢复 <div class="hero-scene"><SolarSystem client:only="react" /></div> */}
+    <div class="container hero-content">
+      <h1 class="hero-title reveal">
+        <DepthText
+          client:visible
+          text="周游的小破站"
+          layers={28}
+          depth={2.4}
+          faceColor="#1a1a1a"
+          depthColor="#ffffff"
+          tilt={7.5}
+          fontSize="clamp(3rem, 8vw, 5rem)"
+          fontWeight={700}
+        />
+      </h1>
+      <div class="hero-sub reveal">
+        <ParticleText
+          client:visible
+          text="独立开发者 · 写代码也写字"
+          color="#6b6b6b"
+          highlightColor="#6b6b6b"
+          fontSize="1.15rem"
+          fontWeight={400}
+          density={1}
+          particleSize={1.5}
+          scatter={40}
+          idleDrift={0.5}
+          glow={false}
+          style={{ minHeight: 0, height: '48px' }}
+        />
+      </div>
       <div class="hero-ticker reveal">
         <TickerTape
           items={SOCIAL_LINKS.map((s) => ({
@@ -87,8 +118,22 @@ const works = (await getCollection('portfolio'))
 </BaseLayout>
 
 <style>
-  .hero { padding: 200px 0 120px; text-align: center; }
-  .hero-title { font-family: var(--font-serif); font-size: clamp(3rem, 8vw, 5rem); font-weight: 700; letter-spacing: 0.04em; margin-bottom: 20px; }
+  .hero { min-height: 100vh; display: flex; align-items: center; text-align: center; }
+  /* 深空星空背景已注释掉，恢复原样。原背景：
+  .hero {
+    position: relative; min-height: 100vh; display: flex; align-items: center; text-align: center; overflow: hidden;
+    background:
+      radial-gradient(1.5px 1.5px at 18% 22%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 72% 30%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1.5px 1.5px at 45% 70%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 85% 65%, rgba(255,255,255,0.75), transparent),
+      radial-gradient(1px 1px at 30% 85%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 60% 12%, rgba(255,255,255,0.6), transparent),
+      linear-gradient(180deg, #0b1026 0%, #131a3a 55%, #0e1430 100%);
+  } */
+  .hero-scene { position: absolute; inset: 0; z-index: 1; }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-title { font-family: var(--font-serif); margin-bottom: 20px; }
   .hero-sub { font-size: 1.15rem; color: var(--color-text-dim); margin-bottom: 24px; }
   .hero-ticker { margin-bottom: 0; }
 

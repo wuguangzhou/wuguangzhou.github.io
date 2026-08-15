@@ -8,10 +8,10 @@ export interface TickerItem {
   external?: boolean;
 }
 
-const { items } = Astro.props;
+const { items, dark = false } = Astro.props;
 ---
 
-<div class="ticker-wrap" id="ticker-wrap" aria-label="社交链接滚动条">
+<div class:list={['ticker-wrap', { 'ticker-dark': dark }]} id="ticker-wrap" aria-label="社交链接滚动条">
   <div class="ticker-track" id="ticker-track">
     {items.map((item) => (
       <a
@@ -126,6 +126,14 @@ const { items } = Astro.props;
 
   .ticker-item:hover {
     color: var(--color-accent);
+  }
+
+  /* Dark variant for use over the starfield hero */
+  .ticker-wrap.ticker-dark .ticker-item {
+    color: rgba(255, 255, 255, 0.72);
+  }
+  .ticker-wrap.ticker-dark .ticker-item:hover {
+    color: #fff;
   }
 
   .ticker-label {

@@ -15,13 +15,16 @@
     "astro": "^7.2.1",
     "clsx": "^2.1.1",
     "marked": "^18.0.9",
+    "ogl": "^1.0.11",
     "preline": "^4.2.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.2"
+    "react-router-dom": "^7.18.2",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "@types/three": "^0.185.4",
     "@vitejs/plugin-react": "^6.0.5",
     "tailwindcss": "^4.3.3"
   }

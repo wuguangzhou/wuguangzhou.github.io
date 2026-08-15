@@ -10,11 +10,8 @@ if (!about) return Astro.redirect('/404');
   <section class="section" style="padding-top:160px">
     <div class="container about-layout">
       <div class="about-avatar reveal">
-        <svg viewBox="0 0 120 120" width="120" height="120">
-          <circle cx="60" cy="60" r="58" fill="var(--color-surface)" stroke="var(--color-border)" stroke-width="2"/>
-          <circle cx="60" cy="48" r="20" fill="var(--color-border)"/>
-          <ellipse cx="60" cy="96" rx="32" ry="20" fill="var(--color-border)"/>
-        </svg>
+        <!-- 头像：更换 public/images/avatar/avatar.jpg 即可，无需改代码 -->
+        <img src="/images/avatar/avatar.jpg" alt="周游的头像" width="128" height="128" />
       </div>
       <div class="about-text">
         <h1 class="about-name reveal">周游</h1>
@@ -52,6 +49,15 @@ if (!about) return Astro.redirect('/404');
   .about-layout { display: grid; grid-template-columns: 140px 1fr; gap: 48px; align-items: start; }
   @media (max-width: 768px) { .about-layout { grid-template-columns: 1fr; gap: 24px; } }
   .about-avatar { flex-shrink: 0; }
+  .about-avatar img {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    border: 2px solid var(--color-border);
+    display: block;
+  }
   .about-name { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 700; margin-bottom: 12px; }
   .about-bio { font-size: 1.1rem; color: var(--color-text-dim); line-height: 1.8; }
   .motto { font-family: var(--font-serif); font-size: 1.4rem; font-style: italic; color: var(--color-text-dim); border-left: 3px solid var(--color-accent); padding: 24px 32px; margin: 0; max-width: 720px; line-height: 1.7; }

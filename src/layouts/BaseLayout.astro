@@ -2,6 +2,7 @@
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import SEO from '../components/layout/SEO.astro';
+import RippleDistortion from '../components/effects/RippleDistortion.jsx';
 
 export interface Props {
   title?: string;
@@ -23,9 +24,29 @@ const { title, description, ogImage } = Astro.props;
       href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:opsz,wght@14..32,300..500&family=JetBrains+Mono:wght@400&display=swap"
       rel="stylesheet"
     />
+    <link rel="preload" as="image" href="/images/backgrounds/ripple-bg.svg" />
     <SEO title={title} description={description} ogImage={ogImage} />
   </head>
   <body>
+    <div class="ripple-bg" aria-hidden="true">
+      <RippleDistortion
+        client:load
+        src="/images/backgrounds/ripple-bg.svg"
+        grayscale={false}
+        tint="#f7f6f1"
+        tintAmount={0.1}
+        glint={0.45}
+        highlightColor="#ffffff"
+        strength={0.35}
+        swirl={0.3}
+        rings={6}
+        dispersion={0.3}
+        spread={6}
+        fade={4}
+        quality="low"
+        trigger="hover"
+      />
+    </div>
     <Header />
     <main>
       <slot />
@@ -49,4 +70,13 @@ const { title, description, ogImage } = Astro.props;
 
 <style is:global>
   @import '../styles/global.css';
+</style>
+
+<style>
+  .ripple-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
 </style>
